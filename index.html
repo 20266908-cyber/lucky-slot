@@ -6,16 +6,51 @@
 <title>Lucky Slots - Arcade</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;min-height:100dvh;height:100dvh;overflow:hidden;font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;background:radial-gradient(ellipse at 50% -8%,rgba(255,246,190,.98) 0 7%,rgba(255,208,92,.72) 18%,transparent 42%),radial-gradient(circle at 12% 18%,rgba(255,224,110,.75) 0 2%,transparent 8%),radial-gradient(circle at 88% 18%,rgba(255,224,110,.75) 0 2%,transparent 8%),repeating-radial-gradient(ellipse at center,rgba(255,224,125,.14) 0 3px,rgba(112,0,0,.08) 4px 12px,transparent 13px 34px),linear-gradient(180deg,#8f0b0b 0%,#c51b16 30%,#a9090b 68%,#650508 100%);color:#17213b;display:flex;align-items:center;justify-content:center;position:relative}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:linear-gradient(90deg,transparent 0 7%,rgba(255,214,87,.22) 7.2% 7.7%,transparent 8% 92%,rgba(255,214,87,.22) 92.3% 92.8%,transparent 93%),repeating-linear-gradient(135deg,transparent 0 34px,rgba(255,222,120,.09) 35px 38px,transparent 39px 70px),radial-gradient(circle at 50% 100%,rgba(255,236,157,.18),transparent 45%);mix-blend-mode:screen}
-body:after{content:"✦   ✧   ✦   ✧   ✦   ✧   ✦   ✧   ✦";position:fixed;left:0;right:0;bottom:3vh;text-align:center;font-size:clamp(18px,3vw,34px);letter-spacing:18px;color:rgba(255,226,125,.32);text-shadow:0 0 12px rgba(255,214,80,.35);pointer-events:none;z-index:0}
-.game{width:min(94vw,560px);max-height:96dvh;overflow-y:auto;padding:22px;text-align:center;position:relative;z-index:2;background:rgba(255,255,255,.94);border:3px solid rgba(255,218,100,.8);border-radius:28px;box-shadow:0 25px 80px rgba(0,0,0,.45)}
+body{
+  margin:0; min-height:100dvh; height:100dvh; overflow:hidden;
+  font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;
+  background:
+    radial-gradient(ellipse at 50% -8%,rgba(255,246,190,.98) 0 7%,rgba(255,208,92,.72) 18%,transparent 42%),
+    radial-gradient(circle at 12% 18%,rgba(255,224,110,.75) 0 2%,transparent 8%),
+    radial-gradient(circle at 88% 18%,rgba(255,224,110,.75) 0 2%,transparent 8%),
+    repeating-radial-gradient(ellipse at center,rgba(255,224,125,.14) 0 3px,rgba(112,0,0,.08) 4px 12px,transparent 13px 34px),
+    linear-gradient(180deg,#8f0b0b 0%,#c51b16 30%,#a9090b 68%,#650508 100%);
+  color:#17213b; display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+body:before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    linear-gradient(90deg,transparent 0 7%,rgba(255,214,87,.22) 7.2% 7.7%,transparent 8% 92%,rgba(255,214,87,.22) 92.3% 92.8%,transparent 93%),
+    repeating-linear-gradient(135deg,transparent 0 34px,rgba(255,222,120,.09) 35px 38px,transparent 39px 70px),
+    radial-gradient(circle at 50% 100%,rgba(255,236,157,.18),transparent 45%);
+  mix-blend-mode:screen;
+}
+body:after{
+  content:"✦   ✧   ✦   ✧   ✦   ✧   ✦   ✧   ✦";
+  position:fixed; left:0; right:0; bottom:3vh; text-align:center;
+  font-size:clamp(18px,3vw,34px); letter-spacing:18px;
+  color:rgba(255,226,125,.32); text-shadow:0 0 12px rgba(255,214,80,.35);
+  pointer-events:none; z-index:0;
+}
+.game{
+  width:min(94vw,560px); max-height:96dvh; overflow-y:auto; padding:22px; text-align:center;
+  position:relative; z-index:2;
+  background:rgba(255,255,255,.94); border:3px solid rgba(255,218,100,.8);
+  border-radius:28px; box-shadow:0 25px 80px rgba(0,0,0,.45);
+}
 h1{margin:0 0 8px;font-size:34px}
 .sub{opacity:.75;margin-bottom:18px}
-.coinBox{padding:14px 20px;border-radius:18px;margin-bottom:18px;background:rgba(255,255,255,.7)}
+.coinBox{
+  padding:14px 20px; border-radius:18px; margin-bottom:18px;
+  background:rgba(255,255,255,.7);
+}
 .coinLabel{font-size:14px;opacity:.7}
 .coins{font-size:42px;font-weight:900;letter-spacing:1px}
-.bonus{margin:12px 0 18px;padding:10px 14px;border-radius:14px;background:rgba(255,213,79,.12);border:1px solid rgba(255,213,79,.3)}
+.bonus{
+  margin:12px 0 18px; padding:10px 14px; border-radius:14px;
+  background:rgba(255,213,79,.12); border:1px solid rgba(255,213,79,.3);
+}
 .bonus.ready{animation:pulse 1s infinite}
 .slotMachine{position:relative;margin:18px auto 20px;padding:16px 14px 20px;max-width:520px;background:linear-gradient(145deg,#b31313,#5e0707 55%,#260202);border:6px solid #f5c542;border-radius:34px;box-shadow:inset 0 0 0 3px #7b160d,inset 0 0 35px rgba(0,0,0,.65),0 18px 40px rgba(0,0,0,.45)}
 .machineTop{margin:-3px auto 12px;padding:9px 20px 12px;width:92%;background:linear-gradient(180deg,#f8d65b,#c38a08);border:3px solid #fff0a0;border-radius:28px 28px 12px 12px;box-shadow:inset 0 -5px 0 rgba(95,50,0,.25),0 4px 12px rgba(0,0,0,.3)}
@@ -34,7 +69,10 @@ h1{margin:0 0 8px;font-size:34px}
 .machineButton{width:54px;height:22px;border-radius:50%;background:linear-gradient(#ffe86b,#b77b00);border:3px solid #7b4d00;box-shadow:inset 0 -4px 0 rgba(0,0,0,.25),0 3px 0 #542f00}
 .lever{position:absolute;right:-25px;top:90px;width:22px;height:108px;background:linear-gradient(90deg,#0088b5,#2bd7ff);border:3px solid #07506a;border-radius:14px;transform:rotate(10deg);box-shadow:3px 4px 8px rgba(0,0,0,.4)}
 .lever:before{content:"";position:absolute;top:-18px;left:-9px;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a8a,#e92828 60%,#8b0000);border:3px solid #ffd34d;box-shadow:0 3px 8px rgba(0,0,0,.4)}
-button{border:0;border-radius:16px;padding:14px 18px;font-size:18px;font-weight:900;cursor:pointer;color:white}
+button{
+  border:0;border-radius:16px;padding:14px 18px;font-size:18px;
+  font-weight:900;cursor:pointer;color:white;
+}
 #playBtn{width:100%;background:linear-gradient(135deg,#7c4dff,#536dfe)}
 #playBtn:disabled{opacity:.45;cursor:not-allowed}
 .row{display:flex;gap:10px;margin-top:10px}
@@ -63,7 +101,15 @@ button{border:0;border-radius:16px;padding:14px 18px;font-size:18px;font-weight:
 @keyframes flash{50%{filter:brightness(1.8);transform:scale(1.03)}}
 @keyframes shake{25%{transform:translateX(-1px)}50%{transform:translateX(1px)}75%{transform:translateX(-1px)}}
 @keyframes pop{50%{transform:scale(1.12)}}
-@media(max-width:430px){.game{padding:16px}h1{font-size:28px}.slot{font-size:44px}.coins{font-size:36px}}
+@media(max-width:430px){
+  .game{padding:16px}
+  h1{font-size:28px}
+  .slot{font-size:44px}
+  .coins{font-size:36px}
+}
+
+
+/* 카지노풍 잭팟 연출 + 위→아래 릴 애니메이션 */
 .slot{position:relative;overflow:hidden;background:linear-gradient(180deg,#fff 0%,#f5f5f5 48%,#d5d5d5 100%);border:5px solid #b8860b;box-shadow:inset 0 0 0 3px #fff3a0,0 8px 22px rgba(0,0,0,.3)}
 .slot.spinning{animation:reelDrop .18s linear infinite;will-change:transform}
 .slot.win{animation:reelStop .55s ease,jackpotGlow .55s ease 2}
@@ -78,6 +124,7 @@ button{border:0;border-radius:16px;padding:14px 18px;font-size:18px;font-weight:
 .jackpotReel{height:125px;border-radius:18px;border:4px solid #ffd700;background:linear-gradient(#fff,#d8d8d8);color:#111;display:flex;align-items:center;justify-content:center;font-size:60px;box-shadow:inset 0 -10px 0 rgba(0,0,0,.1),0 8px 20px rgba(0,0,0,.35);animation:reelDrop .42s cubic-bezier(.2,.8,.25,1) both}
 .jackpotReel:nth-child(2){animation-delay:.09s}.jackpotReel:nth-child(3){animation-delay:.18s}
 .jackpotText{margin-top:18px;font-size:22px;font-weight:1000;color:#fff3a0}
+/* 다이아 잭팟 전용 9슬롯 */
 .diamondRound{display:none;position:fixed;inset:0;z-index:30;align-items:center;justify-content:center;padding:14px;background:radial-gradient(circle at 50% 25%,#d9fbff 0%,#43c6e8 32%,#075078 75%,#03152d 100%)}
 .diamondRound.show{display:flex}
 .diamondPanel{width:min(94vw,620px);padding:20px;border:5px solid #baf6ff;border-radius:26px;background:linear-gradient(145deg,#f5ffff,#b9f4ff 45%,#54c5e7);box-shadow:0 0 55px rgba(124,244,255,.85),inset 0 0 25px #fff;text-align:center;color:#03405c}
@@ -88,7 +135,9 @@ button{border:0;border-radius:16px;padding:14px 18px;font-size:18px;font-weight:
 .nineSlot.spinning{animation:reelDrop .14s linear infinite}
 .nineSlot.pick{animation:winBounce .55s ease,jackpotGlow .55s ease 2}
 .diamondResult{font-size:clamp(18px,4.5vw,25px);font-weight:1000;margin-top:14px;color:#03405c}
-@media(max-width:430px){.diamondPanel{padding:14px}.nineSlots{gap:6px;padding:7px}}
+@media(max-width:430px){.diamondPanel{padding:14px}.nineSlots{gap:6px;padding:7px}.nineSlot{font-size:clamp(24px,7vw,38px)}}
+
+/* 황금 보너스 슬롯 강화 디자인 */
 .bonusRound{background:radial-gradient(circle at 50% 30%,#fff4a3 0%,#d4af37 24%,#6d4c00 68%,#1d1200 100%)}
 .bonusRound:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 18px,rgba(255,255,255,.08) 19px 21px);pointer-events:none}
 .bonusPanel{position:relative;background:linear-gradient(145deg,#fffbe8 0%,#ffd95a 42%,#d19a00 100%);border:6px solid #fff0a0;border-radius:32px;box-shadow:0 0 90px rgba(255,225,90,.9),inset 0 0 45px rgba(255,255,255,.45)}
@@ -98,6 +147,7 @@ button{border:0;border-radius:16px;padding:14px 18px;font-size:18px;font-weight:
 .sixSlot.spinning{animation:reelDrop .14s linear infinite}
 .sixSlot.pick{animation:winBounce .55s ease,jackpotGlow .55s ease 2;border-color:#fff;box-shadow:0 0 35px rgba(255,255,220,.95),inset 0 0 0 3px #fff8c9}
 @media(max-width:430px){.jackpotReel{height:92px;font-size:44px}.jackpotCard{padding:22px 14px}.jackpotTitle{font-size:48px}}
+
 .bonusRound{display:none;position:fixed;inset:0;background:linear-gradient(135deg,#6d4c00,#d4af37 45%,#8a6500);z-index:20;align-items:center;justify-content:center;padding:20px}
 .bonusRound.show{display:flex}
 .bonusPanel{width:min(94vw,650px);background:linear-gradient(145deg,#fff8d6,#ffd95a 45%,#b8860b);border:4px solid #fff3a0;border-radius:28px;padding:24px;text-align:center;box-shadow:0 0 80px rgba(255,245,150,.75),inset 0 0 30px rgba(255,255,255,.35);color:#4b3200}
@@ -111,9 +161,14 @@ button{border:0;border-radius:16px;padding:14px 18px;font-size:18px;font-weight:
 .bonusGo{width:100%;background:linear-gradient(135deg,#ffb300,#ff7043)}
 .bonusResult{min-height:30px;font-weight:900;font-size:20px;color:#4b3200}
 @media(max-width:430px){.sixSlot{font-size:42px;gap:8px}.bonusPanel{padding:18px}.bonusPanel h2{font-size:25px}}
+
 .game::-webkit-scrollbar{width:7px}
 .game::-webkit-scrollbar-thumb{background:rgba(255,255,255,.25);border-radius:99px}
-@media(max-width:600px){.game{width:96vw;max-height:98dvh;padding:16px}h1{font-size:28px}}
+@media(max-width:600px){
+  .game{width:96vw;max-height:98dvh;padding:16px}
+  h1{font-size:28px}
+}
+
 .shopPanel{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:30;align-items:center;justify-content:center;padding:18px}
 .shopPanel.show{display:flex}
 .shopBox{width:min(94vw,560px);max-height:90dvh;overflow-y:auto;background:linear-gradient(145deg,#fff8e1,#ffe082);color:#3b2a00;border:4px solid #fff3a0;border-radius:24px;padding:22px;box-shadow:0 0 60px rgba(255,215,80,.45)}
@@ -127,34 +182,97 @@ button{border:0;border-radius:16px;padding:14px 18px;font-size:18px;font-weight:
 .shopMsg{text-align:center;min-height:28px;font-weight:900;margin:8px 0}
 .inventory{text-align:center;background:rgba(255,255,255,.45);border-radius:14px;padding:10px;font-weight:800}
 @media(max-width:430px){.bigWin{font-size:23px}.goodLuck{font-size:12px}.lever{right:-17px;top:80px;transform:scale(.82) rotate(10deg)}.slot{font-size:44px}}
-.slotBox{overflow:hidden;padding:8px 4px}
-.slot{overflow:hidden;transform:none!important}
-.slot.spinning{animation:slotSpinContained .12s linear infinite}
-.slot.win,.slot.failAnim{animation:none!important;transform:none!important}
-.sixSlots{overflow:hidden;padding:8px 4px}
-.sixSlot{overflow:hidden;transform:none!important}
-.sixSlot.spinning{animation:bonusSpinContained .12s linear infinite}
-.sixSlot.pick{animation:bonusPickContained .55s ease!important;transform:none!important}
-@keyframes slotSpinContained{0%{transform:translateY(-3px)}50%{transform:translateY(3px)}100%{transform:translateY(-3px)}}
-@keyframes bonusSpinContained{0%{transform:translateY(-3px)}50%{transform:translateY(3px)}100%{transform:translateY(-3px)}}
-@keyframes bonusPickContained{0%,100%{transform:none;filter:none}35%{transform:none;filter:brightness(1.35)}70%{transform:none;filter:brightness(1.1)}}
-.diamondPanel{width:min(88vw,540px);padding:16px}
-.nineSlots{width:min(100%,430px);margin:0 auto;gap:7px;padding:8px;overflow:hidden}
-.nineSlot{aspect-ratio:1;min-width:0;min-height:0;overflow:hidden;font-size:clamp(27px,7vw,48px);position:relative}
-.nineSlot.spinning{animation:diamondSpinContained .12s linear infinite}
-.nineSlot.pick{animation:diamondPickContained .45s ease 2}
-@keyframes diamondSpinContained{0%{transform:translateY(-2px);filter:blur(.3px)}50%{transform:translateY(2px);filter:blur(.2px)}100%{transform:translateY(-2px);filter:blur(.3px)}}
-@keyframes diamondPickContained{0%,100%{transform:scale(1);box-shadow:inset 0 -7px 0 rgba(0,90,130,.12),0 4px 10px rgba(0,0,0,.2)}50%{transform:scale(.97);box-shadow:0 0 18px #fff,inset 0 0 12px #7cefff}}
+
+/* 슬롯 칸이 기계 밖으로 튀어나오지 않도록 고정 */
+.slotBox{
+  overflow:hidden;
+  padding:8px 4px;
+}
+.slot{
+  overflow:hidden;
+  transform:none !important;
+}
+.slot.spinning{
+  animation:slotSpinContained .12s linear infinite;
+}
+.slot.win,.slot.failAnim{
+  animation:none !important;
+  transform:none !important;
+}
+.sixSlots{
+  overflow:hidden;
+  padding:8px 4px;
+}
+.sixSlot{
+  overflow:hidden;
+  transform:none !important;
+}
+.sixSlot.spinning{
+  animation:bonusSpinContained .12s linear infinite;
+}
+.sixSlot.pick{
+  animation:bonusPickContained .55s ease !important;
+  transform:none !important;
+}
+@keyframes slotSpinContained{
+  0%{transform:translateY(-3px)}
+  50%{transform:translateY(3px)}
+  100%{transform:translateY(-3px)}
+}
+@keyframes bonusSpinContained{
+  0%{transform:translateY(-3px)}
+  50%{transform:translateY(3px)}
+  100%{transform:translateY(-3px)}
+}
+@keyframes bonusPickContained{
+  0%,100%{transform:none;filter:none}
+  35%{transform:none;filter:brightness(1.35)}
+  70%{transform:none;filter:brightness(1.1)}
+}
+
+/* 다이아 9슬롯을 조금 작게 하고 각 칸 안에서만 움직이도록 */
+.diamondPanel{width:min(88vw,540px);padding:16px;}
+.nineSlots{width:min(100%,430px);margin:0 auto;gap:7px;padding:8px;overflow:hidden;}
+.nineSlot{aspect-ratio:1;min-width:0;min-height:0;overflow:hidden;font-size:clamp(27px,7vw,48px);position:relative;}
+.nineSlot.spinning{animation:diamondSpinContained .12s linear infinite;}
+.nineSlot.pick{animation:diamondPickContained .45s ease 2;}
+@keyframes diamondSpinContained{
+  0%{transform:translateY(-2px);filter:blur(.3px)}
+  50%{transform:translateY(2px);filter:blur(.2px)}
+  100%{transform:translateY(-2px);filter:blur(.3px)}
+}
+@keyframes diamondPickContained{
+  0%,100%{transform:scale(1);box-shadow:inset 0 -7px 0 rgba(0,90,130,.12),0 4px 10px rgba(0,0,0,.2)}
+  50%{transform:scale(.97);box-shadow:0 0 18px #fff,inset 0 0 12px #7cefff}
+}
 @media(max-width:430px){.diamondPanel{width:min(88vw,400px);padding:12px}.nineSlots{gap:5px;padding:6px}.nineSlot{font-size:clamp(24px,7vw,38px)}}
-.sixSlot,.nineSlot{position:relative;overflow:hidden;isolation:isolate}
-.sixSlot.spinning,.nineSlot.spinning{animation:none!important}
-.sixSlot .reelSymbol,.nineSlot .reelSymbol{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;line-height:1;transform:translateY(0);will-change:transform}
-.sixSlot.spinning .reelSymbol,.nineSlot.spinning .reelSymbol{animation:reelContinuous .18s linear infinite}
-.sixSlot:not(.spinning) .reelSymbol,.nineSlot:not(.spinning) .reelSymbol{animation:none;transform:translateY(0)}
-@keyframes reelContinuous{0%{transform:translateY(-135%);filter:blur(1.1px)}40%{transform:translateY(18%);filter:blur(.75px)}46%{transform:translateY(18%);filter:blur(.75px)}52%{transform:translateY(25%);filter:blur(.65px)}100%{transform:translateY(135%);filter:blur(1.1px)}}
-@keyframes reelLand{0%{transform:translateY(-32%);filter:blur(.4px)}65%{transform:translateY(7%);filter:blur(0)}100%{transform:translateY(0);filter:blur(0)}}
+
+/* 골드/다이아 슬롯도 일반 슬롯처럼 각 칸 안에서 심볼이 위에서 아래로 떨어짐 */
+.sixSlot,.nineSlot{position:relative;overflow:hidden;isolation:isolate;}
+/* 칸 자체는 흔들지 않고, 심볼만 셀 내부에서 이동시킴 */
+.sixSlot.spinning,.nineSlot.spinning{animation:none!important;}
+.sixSlot .reelSymbol,.nineSlot .reelSymbol{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  line-height:1;transform:translateY(0);will-change:transform;
+}
+.sixSlot.spinning .reelSymbol,.nineSlot.spinning .reelSymbol{animation:reelContinuous .18s linear infinite;}
+.sixSlot:not(.spinning) .reelSymbol,.nineSlot:not(.spinning) .reelSymbol{animation:none;transform:translateY(0);}
+@keyframes reelContinuous{
+  0%{transform:translateY(-135%);filter:blur(1.1px)}
+  40%{transform:translateY(18%);filter:blur(.75px)}
+  46%{transform:translateY(18%);filter:blur(.75px)}
+  52%{transform:translateY(25%);filter:blur(.65px)}
+  100%{transform:translateY(135%);filter:blur(1.1px)}
+}
+@keyframes reelLand{
+  0%{transform:translateY(-32%);filter:blur(.4px)}
+  65%{transform:translateY(7%);filter:blur(0)}
+  100%{transform:translateY(0);filter:blur(0)}
+}
 </style>
+
 <style>
+/* 밝은 카지노 배경에서도 모든 주요 텍스트가 선명하게 보이도록 수정 */
 .game{color:#241300}
 .game h1{color:#241300;text-shadow:0 1px 0 #fff}
 .game .sub{color:#4a2b00;opacity:1}
@@ -167,119 +285,207 @@ button{border:0;border-radius:16px;padding:14px 18px;font-size:18px;font-weight:
 .row button:disabled{color:#fff;opacity:.72}
 #playBtn{color:#fff!important;text-shadow:0 2px 3px rgba(0,0,0,.45)}
 .bonusBtn,.shopBtn,.resetBtn{color:#fff!important}
-.diamondPanel{width:min(88vw,540px);padding:16px}
-.nineSlots{width:min(100%,430px);margin:0 auto;gap:7px;padding:8px;overflow:hidden}
-.nineSlot{aspect-ratio:1;min-width:0;min-height:0;overflow:hidden;font-size:clamp(27px,7vw,48px);position:relative}
-.nineSlot.spinning{animation:diamondSpinContained .12s linear infinite}
-.nineSlot.pick{animation:diamondPickContained .45s ease 2}
-@keyframes diamondSpinContained{0%{transform:translateY(-2px);filter:blur(.3px)}50%{transform:translateY(2px);filter:blur(.2px)}100%{transform:translateY(-2px);filter:blur(.3px)}}
-@keyframes diamondPickContained{0%,100%{transform:scale(1);box-shadow:inset 0 -7px 0 rgba(0,90,130,.12),0 4px 10px rgba(0,0,0,.2)}50%{transform:scale(.97);box-shadow:0 0 18px #fff,inset 0 0 12px #7cefff}}
+
+/* 다이아 9슬롯을 조금 작게 하고 각 칸 안에서만 움직이도록 */
+.diamondPanel{width:min(88vw,540px);padding:16px;}
+.nineSlots{width:min(100%,430px);margin:0 auto;gap:7px;padding:8px;overflow:hidden;}
+.nineSlot{aspect-ratio:1;min-width:0;min-height:0;overflow:hidden;font-size:clamp(27px,7vw,48px);position:relative;}
+.nineSlot.spinning{animation:diamondSpinContained .12s linear infinite;}
+.nineSlot.pick{animation:diamondPickContained .45s ease 2;}
+@keyframes diamondSpinContained{
+  0%{transform:translateY(-2px);filter:blur(.3px)}
+  50%{transform:translateY(2px);filter:blur(.2px)}
+  100%{transform:translateY(-2px);filter:blur(.3px)}
+}
+@keyframes diamondPickContained{
+  0%,100%{transform:scale(1);box-shadow:inset 0 -7px 0 rgba(0,90,130,.12),0 4px 10px rgba(0,0,0,.2)}
+  50%{transform:scale(.97);box-shadow:0 0 18px #fff,inset 0 0 12px #7cefff}
+}
 @media(max-width:430px){.diamondPanel{width:min(88vw,400px);padding:12px}.nineSlots{gap:5px;padding:6px}.nineSlot{font-size:clamp(24px,7vw,38px)}}
+
 </style>
+
 <style>
-html,body{-webkit-tap-highlight-color:transparent}
-button,[role="button"]{touch-action:manipulation;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;pointer-events:auto}
-button{min-height:44px}
-#playBtn::after{pointer-events:none}
-body::before,body::after,.jackpotCelebration::before,.bonusRound::before,.slot::before,.slot::after{pointer-events:none!important}
-.shopPanel,.bonusRound,.diamondRound,.jackpotCelebration{touch-action:manipulation}
-.shopBox,.bonusPanel,.diamondPanel,.jackpotCard{position:relative;z-index:2}
+/* 터치와 릴 정지 애니메이션 보정 */
+html,body,button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button{user-select:none;-webkit-user-select:none}
+.slot{overflow:hidden}
+.slot.spinning{animation:none!important;transform:none!important}
+.slot.spinning .reelSymbol{animation:reelDrop .12s linear infinite!important}
+.slot .reelSymbol{will-change:transform}
+@keyframes reelDrop{0%{transform:translateY(-135%);filter:blur(2px)}35%{transform:translateY(-35%);filter:blur(1px)}70%{transform:translateY(25%);filter:blur(.5px)}100%{transform:translateY(0);filter:blur(0)}}
 </style>
 </head>
 <body>
 <div class="game" id="game">
-<h1>🎰 Lucky Slots</h1>
-<div class="sub">🪙 코인 100개로 돌리는 아케이드 슬롯</div>
-<div class="coinBox"><div class="coinLabel">보유 코인</div><div class="coins" id="coins">0</div></div>
-<div class="bonus" id="bonus">🎁 보너스 코인: 준비 중...</div>
-<div class="slotMachine" id="slotMachine">
-<div class="machineTop"><div class="bigWin">BIG WIN</div><div class="goodLuck">GOOD LUCK • LUCKY SLOTS</div></div>
-<div class="slotBox">
-<div class="slot" id="s1"><div class="reelSymbol">🍒</div></div>
-<div class="slot" id="s2"><div class="reelSymbol">🍋</div></div>
-<div class="slot" id="s3"><div class="reelSymbol">🍊</div></div>
+  <h1>🎰 Lucky Slots</h1>
+  <div class="sub">🪙 코인 100개로 돌리는 아케이드 슬롯</div>
+
+  <div class="coinBox">
+    <div class="coinLabel">보유 코인</div>
+    <div class="coins" id="coins">0</div>
+  </div>
+
+  <div class="bonus" id="bonus">🎁 보너스 코인: 준비 중...</div>
+
+  <div class="slotMachine" id="slotMachine">
+    <div class="machineTop">
+      <div class="bigWin">BIG WIN</div>
+      <div class="goodLuck">GOOD LUCK • LUCKY SLOTS</div>
+    </div>
+    <div class="slotBox">
+      <div class="slot" id="s1"><div class="reelSymbol">🍒</div></div>
+      <div class="slot" id="s2"><div class="reelSymbol">🍋</div></div>
+      <div class="slot" id="s3"><div class="reelSymbol">🍊</div></div>
+    </div>
+    <div class="machineButtons">
+      <span class="machineButton"></span>
+      <span class="machineButton"></span>
+      <span class="machineButton"></span>
+    </div>
+    <div class="lever"></div>
+  </div>
+
+  <button id="playBtn">▶ PLAY (-100 코인)</button>
+
+  <div class="row">
+    <button id="bonusBtn">🎁 보너스 받기</button>
+    <button id="shopBtn">🛒 상점</button>
+    <button id="commandToggleBtn">🧪 테스트 / 옵션</button>
+    <button id="resetBtn">↻ 초기화</button>
+  </div>
+
+  <div class="commandPanel" id="commandPanel"
+       style="display:none;margin:12px auto;padding:12px;border:2px dashed #ffd54f;border-radius:16px;background:rgba(30,15,0,.82);max-width:520px">
+    <div style="font-weight:1000;color:#ffe082;margin-bottom:8px">🔒 테스트 명령어 비밀번호</div>
+
+    <div id="commandPasswordGate" style="margin:8px 0 14px;text-align:center">
+      <label for="commandPassword" style="display:block;margin-bottom:6px">
+        명령어를 사용하려면 비밀번호를 입력하세요.
+      </label>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+        <input id="commandPassword"
+               type="password"
+               inputmode="numeric"
+               maxlength="4"
+               autocomplete="off"
+               placeholder="비밀번호 4자리"
+               aria-label="입력한 비밀번호"
+               style="width:170px;padding:10px;border-radius:10px;border:2px solid #ffd54f;font-size:18px;text-align:center;letter-spacing:6px;background:#fff;color:#222">
+
+        <button id="unlockCommandsBtn"
+                style="background:linear-gradient(135deg,#ffb300,#ff6f00)">
+          확인
+        </button>
+      </div>
+
+      <div id="pinKeypad"
+           style="display:grid;grid-template-columns:repeat(5,minmax(42px,1fr));gap:7px;max-width:360px;margin:10px auto 0">
+      </div>
+
+      <div style="display:flex;gap:7px;justify-content:center;margin-top:7px;flex-wrap:wrap">
+        <button id="pinClearBtn" style="background:linear-gradient(135deg,#78909c,#455a64)">지우기</button>
+        <button id="pinBackBtn" style="background:linear-gradient(135deg,#78909c,#455a64)">⌫ 한 자리 삭제</button>
+      </div>
+
+      <div id="commandPasswordMsg"
+           style="font-weight:800;margin-top:8px;color:#fff;min-height:22px">
+        비밀번호 4자리를 입력하세요.
+      </div>
+    </div>
+
+    <div id="testCommandArea" style="display:none">
+      <div style="font-weight:1000;color:#ffe082;margin-bottom:8px">🧪 테스트 명령어</div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+        <button id="forceJackpotBtn" style="background:linear-gradient(135deg,#ffb300,#ff6f00)">🎰 잭팟 확정</button>
+        <button id="forceDiamondBtn" style="background:linear-gradient(135deg,#40c4ff,#006064)">💎 다이아 잭팟 확정</button>
+        <button id="probabilityUpBtn" style="background:linear-gradient(135deg,#ab47bc,#6a1b9a)">📈 확률업: OFF</button>
+      </div>
+
+      <div id="commandMsg" style="font-weight:800;color:#fff;margin-top:8px">
+        확정 명령은 다음 스핀 1회에 적용됩니다.
+      </div>
+
+      <div style="font-weight:1000;color:#ffe082;margin:14px 0 8px">🪙 코인 추가 명령어</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center">
+        <input id="addCoinsAmount" type="number" min="1" max="1000000000"
+               step="100" value="1000" inputmode="numeric"
+               aria-label="추가할 코인"
+               placeholder="추가할 코인 수"
+               style="width:150px;padding:10px;border-radius:10px;border:2px solid #ffd54f;font-size:16px;text-align:center">
+        <button id="addCoinsBtn" style="background:linear-gradient(135deg,#ffd54f,#ff8f00);color:#351900">🪙 코인 추가</button>
+      </div>
+      <div id="addCoinsMsg" style="font-weight:800;margin-top:8px;min-height:22px;color:#fff">
+        원하는 코인 수를 입력하고 추가하세요.
+      </div>
+
+      <div style="font-weight:1000;color:#ffe082;margin:14px 0 8px">♾️ 무한 코인 명령어</div>
+      <button id="infiniteToggleBtn" style="width:100%;background:linear-gradient(135deg,#43a047,#1b5e20)">♾️ 무한 코인 켜기</button>
+      <div id="optionsMsg" style="font-weight:800;margin-top:9px;min-height:22px;color:#fff">
+        무한 코인 상태를 여기서 바꿀 수 있어요.
+      </div>
+      <button id="lockCommandsBtn" style="margin-top:10px;background:linear-gradient(135deg,#546e7a,#263238)">🔒 다시 잠그기</button>
+    </div>
+  </div>
+
+  <div class="msg" id="msg">PLAY를 눌러 시작!</div>
 </div>
-<div class="machineButtons"><span class="machineButton"></span><span class="machineButton"></span><span class="machineButton"></span></div>
-<div class="lever"></div>
-</div>
-<button id="playBtn">▶ PLAY (-100 코인)</button>
-<div class="row">
-<button id="bonusBtn">🎁 보너스 받기</button>
-<button id="shopBtn">🛒 상점</button>
-<button id="commandToggleBtn">🧪 테스트 / 옵션</button>
-<button id="resetBtn">↻ 초기화</button>
-</div>
-<div class="commandPanel" id="commandPanel" style="display:none;margin:12px auto;padding:12px;border:2px dashed #ffd54f;border-radius:16px;background:rgba(30,15,0,.82);max-width:520px">
-<div style="font-weight:1000;color:#ffe082;margin-bottom:8px">🔒 테스트 명령어 비밀번호</div>
-<div id="commandPasswordGate" style="margin:8px 0 14px;text-align:center">
-<label for="commandPassword" style="display:block;margin-bottom:6px">명령어를 사용하려면 비밀번호를 입력하세요.</label>
-<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-<input id="commandPassword" type="password" inputmode="none" maxlength="4" readonly placeholder="● ● ● ●" aria-label="입력한 비밀번호" style="width:150px;padding:10px;border-radius:10px;border:2px solid #ffd54f;font-size:18px;text-align:center;letter-spacing:6px;background:#fff;color:#222">
-<button id="unlockCommandsBtn" style="background:linear-gradient(135deg,#ffb300,#ff6f00)">확인</button>
-</div>
-<div id="pinKeypad" style="display:grid;grid-template-columns:repeat(5,minmax(42px,1fr));gap:7px;max-width:360px;margin:10px auto 0"></div>
-<div style="display:flex;gap:7px;justify-content:center;margin-top:7px;flex-wrap:wrap">
-<button id="pinClearBtn" style="background:linear-gradient(135deg,#78909c,#455a64)">지우기</button>
-<button id="pinBackBtn" style="background:linear-gradient(135deg,#78909c,#455a64)">⌫ 한 자리 삭제</button>
-</div>
-<div id="commandPasswordMsg" style="font-weight:800;margin-top:8px;color:#fff;min-height:22px">은행식 숫자 키패드에서 비밀번호를 입력하세요.</div>
-</div>
-<div id="testCommandArea" style="display:none">
-<div style="font-weight:1000;color:#ffe082;margin-bottom:8px">🧪 테스트 명령어</div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-<button id="forceJackpotBtn" style="background:linear-gradient(135deg,#ffb300,#ff6f00)">🎰 잭팟 확정</button>
-<button id="forceDiamondBtn" style="background:linear-gradient(135deg,#40c4ff,#006064)">💎 다이아 잭팟 확정</button>
-<button id="probabilityUpBtn" style="background:linear-gradient(135deg,#ab47bc,#6a1b9a)">📈 확률업: OFF</button>
-</div>
-<div id="commandMsg" style="font-weight:800;color:#fff;margin-top:8px">확정 명령은 다음 스핀 1회에 적용됩니다.</div>
-<div style="font-weight:1000;color:#ffe082;margin:14px 0 8px">🪙 코인 추가 명령어</div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center">
-<input id="addCoinsAmount" type="number" min="1" max="1000000000" step="100" value="1000" inputmode="numeric" aria-label="추가할 코인" placeholder="추가할 코인 수" style="width:150px;padding:10px;border-radius:10px;border:2px solid #ffd54f;font-size:16px;text-align:center">
-<button id="addCoinsBtn" style="background:linear-gradient(135deg,#ffd54f,#ff8f00);color:#351900">🪙 코인 추가</button>
-</div>
-<div id="addCoinsMsg" style="font-weight:800;margin-top:8px;min-height:22px;color:#fff">원하는 코인 수를 입력하고 추가하세요.</div>
-<div style="font-weight:1000;color:#ffe082;margin:14px 0 8px">♾️ 무한 코인 명령어</div>
-<button id="infiniteToggleBtn" style="width:100%;background:linear-gradient(135deg,#43a047,#1b5e20)">♾️ 무한 코인 켜기</button>
-<div id="optionsMsg" style="font-weight:800;margin-top:9px;min-height:22px;color:#fff">무한 코인 상태를 여기서 바꿀 수 있어요.</div>
-<button id="lockCommandsBtn" style="margin-top:10px;background:linear-gradient(135deg,#546e7a,#263238)">🔒 다시 잠그기</button>
-</div>
-<div class="msg" id="msg">PLAY를 눌러 시작!</div>
-</div>
+
 <div class="shopPanel" id="shopPanel">
-<div class="shopBox">
-<h2>🛒 아이템 상점</h2>
-<div class="inventory" id="inventory">🍫 초콜릿 0개</div>
-<div class="shopItems"><div class="shopItem"><div class="info">🍫 초콜릿<small>900 코인 → 1개</small></div><button data-item="chocolate" data-price="900">구매</button></div></div>
-<div class="shopMsg" id="shopMsg"></div>
-<button class="shopClose" id="shopClose">닫기</button>
+  <div class="shopBox">
+    <h2>🛒 아이템 상점</h2>
+    <div class="inventory" id="inventory">🍫 초콜릿 0개</div>
+    <div class="shopItems">
+      <div class="shopItem">
+        <div class="info">🍫 초콜릿<small>900 코인 → 1개</small></div>
+        <button data-item="chocolate" data-price="900">구매</button>
+      </div>
+    </div>
+    <div class="shopMsg" id="shopMsg"></div>
+    <button class="shopClose" id="shopClose">닫기</button>
+  </div>
 </div>
-</div>
+
 <div class="jackpotCelebration" id="jackpotCelebration">
-<div class="jackpotCard">
-<div class="jackpotTitle">JACKPOT!</div>
-<div class="jackpotSub">✨ 대박 당첨! ✨</div>
-<div class="jackpotReels"><div class="jackpotReel" id="jackpotReel1">⭐</div><div class="jackpotReel" id="jackpotReel2">⭐</div><div class="jackpotReel" id="jackpotReel3">⭐</div></div>
-<div class="jackpotText">🎰 황금 보너스 슬롯으로 이동합니다!</div>
+  <div class="jackpotCard">
+    <div class="jackpotTitle">JACKPOT!</div>
+    <div class="jackpotSub">✨ 대박 당첨! ✨</div>
+    <div class="jackpotReels">
+      <div class="jackpotReel" id="jackpotReel1">⭐</div>
+      <div class="jackpotReel" id="jackpotReel2">⭐</div>
+      <div class="jackpotReel" id="jackpotReel3">⭐</div>
+    </div>
+    <div class="jackpotText">🎰 황금 보너스 슬롯으로 이동합니다!</div>
+  </div>
 </div>
-</div>
+
 <div class="diamondRound" id="diamondRound">
-<div class="diamondPanel">
-<h2>💎 DIAMOND JACKPOT 💎</h2>
-<p>다이아 잭팟 전용 9슬롯 보너스!</p>
-<div class="nineSlots" id="nineSlots"></div>
-<div class="diamondResult" id="diamondResult">다이아 슬롯 준비 중...</div>
+  <div class="diamondPanel">
+    <h2>💎 DIAMOND JACKPOT 💎</h2>
+    <p>다이아 잭팟 전용 9슬롯 보너스!</p>
+    <div class="nineSlots" id="nineSlots"></div>
+    <div class="diamondResult" id="diamondResult">다이아 슬롯 준비 중...</div>
+  </div>
 </div>
-</div>
+
 <div class="bonusRound" id="bonusRound">
-<div class="bonusPanel">
-<h2>👑 황금 슬롯 BONUS ROUND!</h2>
-<p>🎰 잭팟이 터지면 6칸(3×2) 황금 슬롯으로 이동!<br>2개 +200 · 3개 +300 · 4개 +400 · 5개 +500 · 6개 +3,000 코인<br>황금 슬롯 6개 잭팟 확률 5%<br>한 번 끝나면 자동으로 일반 3칸 슬롯으로 복귀</p>
-<div class="sixSlots" id="sixSlots"></div>
-<div class="bonusResult" id="bonusResult">황금 슬롯 준비 중...</div>
+  <div class="bonusPanel">
+    <h2>👑 황금 슬롯 BONUS ROUND!</h2>
+    <p>
+      잭팟이 터지면 6칸 황금 슬롯으로 이동!<br>
+      2개 +200 · 3개 +300 · 4개 +400 · 5개 +500 · 6개 +3,000 코인<br>
+      황금 슬롯 6개 잭팟 확률 5%<br>
+      한 번 끝나면 일반 3칸 슬롯으로 복귀
+    </p>
+    <div class="sixSlots" id="sixSlots"></div>
+    <div class="bonusResult" id="bonusResult">황금 슬롯 준비 중...</div>
+  </div>
 </div>
-</div>
+
 <script>
-  const symbols = ["🍒","🍋","🍊","🍇","⭐","💎"];
+const symbols = ["🍒","🍋","🍊","🍇","⭐","💎"];
 const rewards = {
   "🍒":100,
   "🍋":150,
@@ -293,11 +499,14 @@ let data = {
   coins:0,
   plays:0,
   lastBonus:0,
-  items:{snack:0,jelly:0,candy:0,chocolate:0},
+  items:{snack:0,jelly:0,candy:0,chocolate:0}
 };
 
 if(!data.items) data.items={snack:0,jelly:0,candy:0,chocolate:0};
-if(typeof data.infiniteCoins !== "boolean") { data.infiniteCoins = false; data.coins = 0; }
+if(typeof data.infiniteCoins !== "boolean") {
+  data.infiniteCoins = false;
+  data.coins = 0;
+}
 if(typeof data.coins !== "number" || !Number.isFinite(data.coins)) data.coins = 0;
 if(typeof data.items.chocolate !== "number") data.items.chocolate = 0;
 if(typeof data.jackpotRewardDone !== "boolean") data.jackpotRewardDone = false;
@@ -314,6 +523,7 @@ const jackpotReels = [
   document.getElementById("jackpotReel3")
 ];
 const bonusBtn = document.getElementById("bonusBtn");
+
 const slotFrames = [
   document.getElementById("s1"),
   document.getElementById("s2"),
@@ -322,7 +532,7 @@ const slotFrames = [
 const slots = slotFrames.map(frame => frame.querySelector(".reelSymbol"));
 
 function save(){
-  // 저장 기능 제거: 새로고침하면 기본 상태로 시작합니다.
+  // 현재 버전은 저장하지 않고 새로고침하면 기본 상태로 시작합니다.
 }
 
 function updateUI(){
@@ -330,11 +540,11 @@ function updateUI(){
     data.coins = 999999999;
     coinsEl.textContent = "∞";
   } else {
-    coinsEl.textContent = Math.max(0, Math.floor(data.coins)).toLocaleString();
+    coinsEl.textContent = Math.max(0,Math.floor(data.coins)).toLocaleString();
   }
 
   const cooldown = 10 * 60 * 1000;
-  const left = Math.max(0, cooldown - (Date.now() - data.lastBonus));
+  const left = Math.max(0,cooldown-(Date.now()-data.lastBonus));
 
   if(left <= 0){
     bonusEl.textContent = "🎁 보너스 코인 준비 완료! (+300)";
@@ -342,9 +552,9 @@ function updateUI(){
     bonusBtn.disabled = false;
     bonusBtn.textContent = "🎁 보너스 받기";
   } else {
-    const totalSec = Math.ceil(left / 1000);
-    const min = Math.floor(totalSec / 60);
-    const sec = totalSec % 60;
+    const totalSec = Math.ceil(left/1000);
+    const min = Math.floor(totalSec/60);
+    const sec = totalSec%60;
     bonusEl.textContent = `⏳ 다음 보너스까지 ${min}:${String(sec).padStart(2,"0")}`;
     bonusEl.classList.remove("ready");
     bonusBtn.disabled = true;
@@ -379,7 +589,6 @@ const addCoinsAmount = document.getElementById("addCoinsAmount");
 const addCoinsBtn = document.getElementById("addCoinsBtn");
 const addCoinsMsg = document.getElementById("addCoinsMsg");
 const lockCommandsBtn = document.getElementById("lockCommandsBtn");
-
 let commandsUnlocked = false;
 
 function lockCommands(message="🔒 테스트 명령어와 무한 코인이 다시 잠겼어요."){
@@ -398,7 +607,6 @@ const pinBackBtn = document.getElementById("pinBackBtn");
 
 function shufflePinKeypad(){
   const digits = ["0","1","2","3","4","5","6","7","8","9"];
-
   for(let i=digits.length-1;i>0;i--){
     const j=Math.floor(Math.random()*(i+1));
     [digits[i],digits[j]]=[digits[j],digits[i]];
@@ -425,7 +633,7 @@ function shufflePinKeypad(){
 
 pinClearBtn.addEventListener("click",()=>{
   commandPassword.value="";
-  commandPasswordMsg.textContent="비밀번호를 다시 입력하세요.";
+  commandPasswordMsg.textContent="입력을 지웠어요.";
 });
 
 pinBackBtn.addEventListener("click",()=>{
@@ -433,565 +641,472 @@ pinBackBtn.addEventListener("click",()=>{
   commandPasswordMsg.textContent=`비밀번호 입력 중 (${commandPassword.value.length}/4)`;
 });
 
+unlockCommandsBtn.addEventListener("click",()=>{
+  if(commandPassword.value === "5252"){
+    commandsUnlocked = true;
+    testCommandArea.style.display = "block";
+    commandPasswordGate.style.display = "none";
+    commandPasswordMsg.textContent = "✅ 잠금 해제 완료!";
+    updateInfiniteButton();
+  } else {
+    commandPassword.value = "";
+    shufflePinKeypad();
+    commandPasswordMsg.textContent = "❌ 비밀번호가 틀렸어요. 숫자 배열이 다시 섞였어요.";
+  }
+});
+
+commandPassword.addEventListener("keydown",e=>{
+  if(e.key === "Enter") unlockCommandsBtn.click();
+});
+
 shufflePinKeypad();
 
-unlockCommandsBtn.addEventListener("click",()=>{
-  if(commandPassword.value === "2026"){
-    commandsUnlocked=true;
-    commandPasswordGate.style.display="none";
-    testCommandArea.style.display="block";
-    commandPasswordMsg.textContent="명령어 잠금 해제 완료!";
-    commandToggleBtn.textContent="🧪 테스트 / 옵션 닫기";
-    optionsMsg.textContent="테스트 명령어를 사용할 수 있습니다.";
-  }else{
-    commandPasswordMsg.textContent="비밀번호가 올바르지 않습니다.";
-    commandPassword.value="";
-    shufflePinKeypad();
-  }
-});
-
 commandToggleBtn.addEventListener("click",()=>{
-  if(commandPanel.style.display==="block"){
-    commandPanel.style.display="none";
-    commandToggleBtn.textContent="🧪 테스트 / 옵션";
-  }else{
-    commandPanel.style.display="block";
-    commandToggleBtn.textContent="🧪 테스트 / 옵션 닫기";
-  }
-});
+  const open = commandPanel.style.display !== "none";
 
-lockCommandsBtn.addEventListener("click",()=>{
-  lockCommands();
+  if(open){
+    lockCommands();
+  } else {
+    commandPanel.style.display = "block";
+    if(!commandsUnlocked){
+      commandPassword.value = "";
+      shufflePinKeypad();
+    }
+    commandToggleBtn.textContent = "🧪 테스트 / 옵션 닫기";
+  }
 });
 
 forceJackpotBtn.addEventListener("click",()=>{
   if(!commandsUnlocked) return;
-  forceNextJackpot=true;
-  forceNextDiamond=false;
-  commandMsg.textContent="다음 스핀에 일반 잭팟이 확정됩니다.";
+  forceNextJackpot = true;
+  forceNextDiamond = false;
+  commandMsg.textContent = "🎰 다음 스핀은 일반 잭팟으로 확정됩니다.";
 });
 
 forceDiamondBtn.addEventListener("click",()=>{
   if(!commandsUnlocked) return;
-  forceNextDiamond=true;
-  forceNextJackpot=false;
-  commandMsg.textContent="다음 스핀에 다이아 잭팟이 확정됩니다.";
+  forceNextDiamond = true;
+  forceNextJackpot = false;
+  commandMsg.textContent = "💎 다음 스핀은 다이아 잭팟으로 확정됩니다.";
 });
 
 probabilityUpBtn.addEventListener("click",()=>{
   if(!commandsUnlocked) return;
-  probabilityUp=!probabilityUp;
-  probabilityUpBtn.textContent=`📈 확률업: ${probabilityUp?"ON":"OFF"}`;
-  commandMsg.textContent=probabilityUp
-    ?"확률업 활성화: 일반 잭팟 50%, 다이아 잭팟 판정 25%"
-    :"확률업 비활성화: 일반 잭팟 10%, 다이아 잭팟 판정 0.5%";
+  probabilityUp = !probabilityUp;
+  probabilityUpBtn.textContent = `📈 확률업: ${probabilityUp ? "ON" : "OFF"}`;
+  commandMsg.textContent = probabilityUp
+    ? "📈 확률업 ON: 잭팟 50%, 잭팟 중 다이아 25%"
+    : "확률업 OFF: 기본 잭팟 10%, 다이아 잭팟 0.5%로 돌아갑니다.";
 });
 
-addCoinsBtn.addEventListener("click",()=>{
+function updateInfiniteButton(){
+  infiniteToggleBtn.textContent = data.infiniteCoins ? "♾️ 무한 코인 끄기" : "♾️ 무한 코인 켜기";
+  infiniteToggleBtn.style.background = data.infiniteCoins
+    ? "linear-gradient(135deg,#e53935,#b71c1c)"
+    : "linear-gradient(135deg,#43a047,#1b5e20)";
+}
+
+infiniteToggleBtn.addEventListener("click",()=>{
+  if(!commandsUnlocked) return;
+  data.infiniteCoins = !data.infiniteCoins;
+  if(data.infiniteCoins) data.coins = 999999999;
+  else data.coins = 0;
+  save();
+  updateUI();
+  updateInfiniteButton();
+  optionsMsg.textContent = data.infiniteCoins
+    ? "♾️ 무한 코인이 켜졌어요!"
+    : "✅ 무한 코인을 껐어요. 일반 코인 모드로 전환됐어요.";
+});
+  addCoinsBtn.addEventListener("click",()=>{
   if(!commandsUnlocked) return;
 
   const amount=Math.floor(Number(addCoinsAmount.value));
 
-  if(!Number.isFinite(amount)||amount<1){
-    addCoinsMsg.textContent="1개 이상의 코인을 입력하세요.";
+  if(!Number.isFinite(amount)||amount<1||amount>1000000000){
+    addCoinsMsg.textContent="1부터 1,000,000,000 사이의 숫자를 입력하세요.";
     return;
   }
 
-  if(amount>1000000000){
-    addCoinsMsg.textContent="한 번에 추가할 수 있는 최대 코인은 1,000,000,000개입니다.";
-    return;
-  }
-
-  data.coins+=amount;
-  save();
+  if(!data.infiniteCoins) data.coins+=amount;
   updateUI();
-  addCoinsMsg.textContent=`🪙 ${amount.toLocaleString()} 코인을 추가했습니다.`;
+  save();
+  addCoinsMsg.textContent=`코인 ${amount.toLocaleString()}개를 추가했습니다.`;
 });
 
-infiniteToggleBtn.addEventListener("click",()=>{
-  if(!commandsUnlocked) return;
+lockCommandsBtn.addEventListener("click",lockCommands);
 
-  data.infiniteCoins=!data.infiniteCoins;
+function setSymbol(frame,symbol){
+  const reel=frame.querySelector(".reelSymbol");
+  if(reel) reel.textContent=symbol;
+}
 
-  if(data.infiniteCoins){
-    data.coins=999999999;
-    infiniteToggleBtn.textContent="♾️ 무한 코인 끄기";
-    optionsMsg.textContent="무한 코인이 켜졌습니다.";
-  }else{
-    data.coins=0;
-    infiniteToggleBtn.textContent="♾️ 무한 코인 켜기";
-    optionsMsg.textContent="무한 코인이 꺼졌습니다. 코인을 다시 추가할 수 있습니다.";
+function setSpinning(frame,on){
+  frame.classList.toggle("spinning",on);
+  frame.classList.remove("win","failAnim");
+
+  const reel=frame.querySelector(".reelSymbol");
+  if(reel){
+    reel.style.animation="";
+    reel.style.transform="";
+  }
+}
+
+function animateStop(frame,symbol,index){
+  return new Promise(resolve=>{
+    const reel=frame.querySelector(".reelSymbol");
+
+    setSpinning(frame,true);
+
+    // 각 릴은 순서대로 정지
+    setTimeout(()=>{
+      frame.classList.remove("spinning");
+      setSymbol(frame,symbol);
+
+      if(reel){
+        reel.style.animation="mainReelLand .42s cubic-bezier(.18,.78,.25,1) both";
+      }
+
+      frame.classList.add("win");
+
+      setTimeout(()=>{
+        frame.classList.remove("win");
+
+        if(reel){
+          reel.style.animation="";
+          reel.style.transform="";
+        }
+
+        resolve();
+      },430);
+
+    },850+index*450);
+  });
+}
+
+let spinning=false;
+
+function randomResult(){
+  if(forceNextDiamond){
+    forceNextDiamond=false;
+    forceNextJackpot=false;
+    return {symbols:["💎","💎","💎"],diamond:true,jackpot:true};
   }
 
-  save();
-  updateUI();
-});
-
-function setSymbol(element,symbol){
-  element.textContent=symbol;
-}
-
-function setReelSymbol(index,symbol){
-  const reel=slots[index];
-  reel.textContent=symbol;
-  reel.style.animation="none";
-  void reel.offsetWidth;
-  reel.style.animation="";
-}
-
-function startReelAnimation(){
-  slotFrames.forEach((frame,index)=>{
-    frame.classList.remove("win","failAnim");
-    frame.classList.add("spinning");
-    slots[index].textContent=randomSymbol();
-  });
-}
-
-function stopReelAnimation(result){
-  result.forEach((symbol,index)=>{
-    slotFrames[index].classList.remove("spinning");
-    setReelSymbol(index,symbol);
-  });
-}
-
-function showJackpotCelebration(result){
-  jackpotCelebrationEl.classList.add("show");
-
-  jackpotReels.forEach((reel,index)=>{
-    reel.textContent=result[index]||"⭐";
-  });
-}
-
-function hideJackpotCelebration(){
-  jackpotCelebrationEl.classList.remove("show");
-}
-
-function getSpinResult(){
-  const isJackpot = forceNextJackpot || forceNextDiamond ||
-    Math.random() < (probabilityUp ? 0.50 : 0.10);
+  const chance=probabilityUp ? 0.5 : 0.1;
+  const jackpot=forceNextJackpot || Math.random()<chance;
 
   forceNextJackpot=false;
 
-  if(forceNextDiamond){
-    forceNextDiamond=false;
-    return {result:["💎","💎","💎"],jackpot:true,diamond:true};
-  }
+  if(jackpot){
+    const diamondChance=probabilityUp ? 0.25 : 0.005;
+    const diamond=Math.random()<diamondChance;
 
-  if(isJackpot){
-    const diamond = Math.random() < (probabilityUp ? 0.25 : 0.005);
-
-    if(diamond){
-      return {result:["💎","💎","💎"],jackpot:true,diamond:true};
-    }
-
-    const jackpotSymbols=["🍒","🍋","🍊","🍇","⭐"];
-    const symbol=jackpotSymbols[Math.floor(Math.random()*jackpotSymbols.length)];
-    return {result:[symbol,symbol,symbol],jackpot:true,diamond:false};
+    return {
+      symbols:diamond
+        ? ["💎","💎","💎"]
+        : ["⭐","⭐","⭐"],
+      jackpot:true,
+      diamond
+    };
   }
 
   return {
-    result:[randomSymbol(),randomSymbol(),randomSymbol()],
+    symbols:[randomSymbol(),randomSymbol(),randomSymbol()],
     jackpot:false,
     diamond:false
   };
 }
 
-function countMatches(result){
-  const counts={};
-
-  result.forEach(symbol=>{
-    counts[symbol]=(counts[symbol]||0)+1;
-  });
-
-  return Math.max(...Object.values(counts));
-}
-
-function awardJackpot(){
-  const prize=500;
-  data.coins+=prize;
-  msgEl.textContent=`🎉 잭팟! ${prize.toLocaleString()} 코인을 획득했습니다!`;
-  return prize;
-}
-
-function openBonusRound(){
-  const bonusRound=document.getElementById("bonusRound");
-  const sixSlots=document.getElementById("sixSlots");
-  const bonusResult=document.getElementById("bonusResult");
-
-  sixSlots.innerHTML="";
-  bonusResult.textContent="황금 슬롯이 돌아갑니다!";
-
-  const bonusSymbols=["🍒","🍋","🍊","🍇","⭐","💎"];
-
-  for(let i=0;i<6;i++){
-    const slot=document.createElement("div");
-    slot.className="sixSlot";
-    const symbol=document.createElement("div");
-    symbol.className="reelSymbol";
-    symbol.textContent=bonusSymbols[Math.floor(Math.random()*bonusSymbols.length)];
-    slot.appendChild(symbol);
-    sixSlots.appendChild(slot);
-  }
-
-  bonusRound.classList.add("show");
-
-  const cells=[...sixSlots.querySelectorAll(".sixSlot")];
-  const symbolsEls=cells.map(cell=>cell.querySelector(".reelSymbol"));
-
-  cells.forEach(cell=>cell.classList.add("spinning"));
-
-  let ticks=0;
-  const interval=setInterval(()=>{
-    symbolsEls.forEach(el=>{
-      el.textContent=bonusSymbols[Math.floor(Math.random()*bonusSymbols.length)];
-    });
-
-    ticks++;
-
-    if(ticks>=16){
-      clearInterval(interval);
-
-      const jackpot=Math.random()<0.05;
-      const result=[];
-
-      if(jackpot){
-        const symbol=bonusSymbols[Math.floor(Math.random()*bonusSymbols.length)];
-        result.push(symbol,symbol,symbol,symbol,symbol,symbol);
-      }else{
-        for(let i=0;i<6;i++){
-          result.push(bonusSymbols[Math.floor(Math.random()*bonusSymbols.length)]);
-        }
-      }
-
-      result.forEach((symbol,index)=>{
-        cells[index].classList.remove("spinning");
-        symbolsEls[index].textContent=symbol;
-        symbolsEls[index].style.animation="reelLand .35s ease both";
-      });
-
-      const counts={};
-      result.forEach(symbol=>counts[symbol]=(counts[symbol]||0)+1);
-      const matches=Math.max(...Object.values(counts));
-
-      let prize=0;
-
-      if(jackpot){
-        prize=3000;
-      }else if(matches>=5){
-        prize=500;
-      }else if(matches===4){
-        prize=400;
-      }else if(matches===3){
-        prize=300;
-      }else if(matches===2){
-        prize=200;
-      }
-
-      data.coins+=prize;
-      save();
-      updateUI();
-
-      bonusResult.textContent=prize>0
-        ?`🎉 ${matches}개 일치! ${prize.toLocaleString()} 코인 획득!`
-        :"아쉽게도 일치하는 심볼이 부족합니다.";
-
-      cells.forEach((cell,index)=>{
-        if(result.filter(s=>s===result[index]).length>=matches){
-          cell.classList.add("pick");
-        }
-      });
-
-      setTimeout(()=>{
-        bonusRound.classList.remove("show");
-        updateUI();
-      },3500);
-    }
-  },110);
-}
-
-function openDiamondRound(){
-  const round=document.getElementById("diamondRound");
-  const grid=document.getElementById("nineSlots");
-  const resultText=document.getElementById("diamondResult");
-
-  grid.innerHTML="";
-  resultText.textContent="💎 다이아 슬롯이 돌아갑니다!";
-
-  const diamondSymbols=["💎","⭐","🍒","🍋","🍇","🔷","💠","🪙","✨"];
-  const cells=[];
-  const symbolsEls=[];
-
-  for(let i=0;i<9;i++){
-    const cell=document.createElement("div");
-    cell.className="nineSlot";
-
-    const symbol=document.createElement("div");
-    symbol.className="reelSymbol";
-    symbol.textContent=diamondSymbols[Math.floor(Math.random()*diamondSymbols.length)];
-
-    cell.appendChild(symbol);
-    grid.appendChild(cell);
-    cells.push(cell);
-    symbolsEls.push(symbol);
-  }
-
-  round.classList.add("show");
-  cells.forEach(cell=>cell.classList.add("spinning"));
-
-  let ticks=0;
-
-  const interval=setInterval(()=>{
-    symbolsEls.forEach(el=>{
-      el.textContent=diamondSymbols[Math.floor(Math.random()*diamondSymbols.length)];
-    });
-
-    ticks++;
-
-    if(ticks>=20){
-      clearInterval(interval);
-
-      const result=[];
-      const jackpot=Math.random()<0.05;
-
-      if(jackpot){
-        result.push(...Array(9).fill("💎"));
-      }else{
-        for(let i=0;i<9;i++){
-          result.push(diamondSymbols[Math.floor(Math.random()*diamondSymbols.length)]);
-        }
-      }
-
-      result.forEach((symbol,index)=>{
-        cells[index].classList.remove("spinning");
-        symbolsEls[index].textContent=symbol;
-        symbolsEls[index].style.animation="reelLand .35s ease both";
-      });
-
-      const counts={};
-      result.forEach(symbol=>counts[symbol]=(counts[symbol]||0)+1);
-      const matches=Math.max(...Object.values(counts));
-
-      let prize=0;
-
-      if(jackpot){
-        prize=10000;
-      }else if(matches>=5){
-        prize=1000;
-      }else if(matches===4){
-        prize=500;
-      }else if(matches===3){
-        prize=250;
-      }else if(matches===2){
-        prize=100;
-      }
-
-      data.coins+=prize;
-      save();
-      updateUI();
-
-      resultText.textContent=prize>0
-        ?`💎 ${matches}개 일치! ${prize.toLocaleString()} 코인 획득!`
-        :"다음 기회를 노려보세요!";
-
-      cells.forEach((cell,index)=>{
-        if(result.filter(s=>s===result[index]).length>=matches){
-          cell.classList.add("pick");
-        }
-      });
-
-      setTimeout(()=>{
-        round.classList.remove("show");
-        updateUI();
-      },3500);
-    }
-  },100);
-}
-
-let spinning=false;
-
-playBtn.addEventListener("click",()=>{
+async function spin(){
   if(spinning) return;
 
   if(!data.infiniteCoins && data.coins<100){
-    msgEl.textContent="코인이 부족합니다. 보너스를 받거나 코인을 추가하세요.";
+    msgEl.textContent="코인이 부족합니다. 보너스를 받아 보세요!";
     return;
   }
 
   spinning=true;
   playBtn.disabled=true;
+  bonusBtn.disabled=true;
 
-  if(!data.infiniteCoins){
-    data.coins-=100;
-  }
-
+  if(!data.infiniteCoins) data.coins-=100;
+  data.plays++;
   updateUI();
-  msgEl.textContent="🎰 슬롯 회전 중...";
+
+  msgEl.textContent="🎰 릴이 돌아갑니다...";
   gameEl.classList.remove("shake","flash");
 
-  startReelAnimation();
+  const result=randomResult();
+  pendingSpinResult=result;
+  pendingJackpot=result.jackpot;
 
-  const outcome=getSpinResult();
+  // 세 릴 모두 먼저 회전 시작
+  slotFrames.forEach(frame=>setSpinning(frame,true));
 
-  setTimeout(()=>{
-    stopReelAnimation(outcome.result);
+  // 결과 심볼은 미리 정하고, 화면에는 순서대로 표시
+  const interimSymbols=slotFrames.map(()=>randomSymbol());
+  slotFrames.forEach((frame,i)=>setSymbol(frame,interimSymbols[i]));
 
-    if(outcome.jackpot){
-      slotFrames.forEach(frame=>frame.classList.add("win"));
+  // 1번 → 2번 → 3번 순서로 멈춤
+  await animateStop(slotFrames[0],result.symbols[0],0);
+  await animateStop(slotFrames[1],result.symbols[1],1);
+  await animateStop(slotFrames[2],result.symbols[2],2);
 
-      if(outcome.diamond){
-        msgEl.textContent="💎 다이아 잭팟!";
-        showJackpotCelebration(outcome.result);
+  if(result.diamond){
+    data.coins+=10000;
+    msgEl.textContent="💎 다이아 잭팟! +10,000 코인!";
+    updateUI();
+    save();
+    await showDiamondRound();
+  }else if(result.jackpot){
+    data.coins+=500;
+    msgEl.textContent="🎉 잭팟 당첨! +500 코인!";
+    updateUI();
+    save();
+    await showJackpot();
+    await showBonusRound();
+  }else{
+    const same=result.symbols.every(s=>s===result.symbols[0]);
 
-        setTimeout(()=>{
-          hideJackpotCelebration();
-          openDiamondRound();
-          spinning=false;
-          playBtn.disabled=false;
-          updateUI();
-        },1800);
-      }else{
-        awardJackpot();
-        showJackpotCelebration(outcome.result);
-
-        setTimeout(()=>{
-          hideJackpotCelebration();
-          openBonusRound();
-          spinning=false;
-          playBtn.disabled=false;
-          updateUI();
-        },1800);
-      }
+    if(same){
+      const reward=rewards[result.symbols[0]]||0;
+      data.coins+=reward;
+      msgEl.textContent=`🎉 당첨! +${reward.toLocaleString()} 코인!`;
     }else{
-      const matches=countMatches(outcome.result);
-      let prize=0;
-
-      if(matches===3){
-        prize=500;
-      }else if(matches===2){
-        prize=0;
-      }
-
-      if(prize>0){
-        data.coins+=prize;
-        msgEl.textContent=`🎉 ${matches}개 일치! ${prize} 코인 획득!`;
-        slotFrames.forEach(frame=>frame.classList.add("win"));
-      }else{
-        msgEl.textContent="아쉽네요! 다음 스핀에 도전하세요.";
-        slotFrames.forEach(frame=>frame.classList.add("failAnim"));
-      }
-
-      save();
-      updateUI();
-      spinning=false;
-      playBtn.disabled=false;
+      msgEl.textContent="다음 기회에 도전하세요!";
     }
 
-    data.plays++;
-    save();
     updateUI();
-  },1300);
+    save();
+  }
+
+  spinning=false;
+  playBtn.disabled=false;
+  updateUI();
+}
+
+playBtn.addEventListener("click",spin);
+
+function showJackpot(){
+  return new Promise(resolve=>{
+    jackpotCelebrationEl.classList.add("show");
+
+    jackpotReels.forEach((reel,i)=>{
+      reel.textContent=["⭐","💰","⭐"][i];
+      reel.style.animation="none";
+      void reel.offsetWidth;
+      reel.style.animation="jackpotReelDrop .5s cubic-bezier(.18,.78,.25,1) both";
+      reel.style.animationDelay=`${i*0.25}s`;
+    });
+
+    setTimeout(()=>{
+      jackpotCelebrationEl.classList.remove("show");
+      resolve();
+    },1900);
+  });
+}
+
+function createBonusSlots(){
+  const container=document.getElementById("sixSlots");
+  container.innerHTML="";
+
+  for(let i=0;i<6;i++){
+    const cell=document.createElement("div");
+    cell.className="sixSlot";
+    cell.innerHTML='<div class="reelSymbol">⭐</div>';
+    container.appendChild(cell);
+  }
+
+  return [...container.querySelectorAll(".sixSlot")];
+}
+
+function createDiamondSlots(){
+  const container=document.getElementById("nineSlots");
+  container.innerHTML="";
+
+  for(let i=0;i<9;i++){
+    const cell=document.createElement("div");
+    cell.className="nineSlot";
+    cell.innerHTML='<div class="reelSymbol">💎</div>';
+    container.appendChild(cell);
+  }
+
+  return [...container.querySelectorAll(".nineSlot")];
+}
+
+function wait(ms){
+  return new Promise(resolve=>setTimeout(resolve,ms));
+}
+
+async function showBonusRound(){
+  const round=document.getElementById("bonusRound");
+  const resultEl=document.getElementById("bonusResult");
+  const cells=createBonusSlots();
+
+  round.classList.add("show");
+  resultEl.textContent="황금 슬롯이 돌아갑니다...";
+
+  const finalSymbol=randomSymbol();
+  const matchCount=Math.random()<0.05 ? 6 : Math.floor(Math.random()*5)+2;
+  const symbolsResult=Array.from({length:6},(_,i)=>
+    i<matchCount ? finalSymbol : randomSymbol()
+  );
+
+  for(let i=0;i<cells.length;i++){
+    const cell=cells[i];
+    cell.classList.add("spinning");
+
+    const reel=cell.querySelector(".reelSymbol");
+    const start=Date.now();
+
+    while(Date.now()-start<400+i*160){
+      reel.textContent=randomSymbol();
+      await wait(70);
+    }
+
+    reel.textContent=symbolsResult[i];
+    cell.classList.remove("spinning");
+    cell.classList.add("pick");
+    await wait(130);
+  }
+
+  const payout={
+    2:200,
+    3:300,
+    4:400,
+    5:500,
+    6:3000
+  }[matchCount]||0;
+
+  if(!data.infiniteCoins) data.coins+=payout;
+
+  resultEl.textContent=`✨ ${matchCount}개 일치! +${payout.toLocaleString()} 코인`;
+  updateUI();
+  save();
+
+  await wait(1600);
+  round.classList.remove("show");
+}
+
+async function showDiamondRound(){
+  const round=document.getElementById("diamondRound");
+  const resultEl=document.getElementById("diamondResult");
+  const cells=createDiamondSlots();
+
+  round.classList.add("show");
+  resultEl.textContent="💎 다이아 심볼을 확인하세요!";
+
+  for(let i=0;i<cells.length;i++){
+    const cell=cells[i];
+    cell.classList.add("spinning");
+
+    const reel=cell.querySelector(".reelSymbol");
+    const start=Date.now();
+
+    while(Date.now()-start<300+i*100){
+      reel.textContent=["💎","✨","💠","💎"][Math.floor(Math.random()*4)];
+      await wait(65);
+    }
+
+    reel.textContent="💎";
+    cell.classList.remove("spinning");
+    cell.classList.add("pick");
+    await wait(80);
+  }
+
+  resultEl.textContent="💎 다이아 잭팟! +10,000 코인!";
+  await wait(1600);
+  round.classList.remove("show");
+}
+
+document.getElementById("diamondClose").addEventListener("click",()=>{
+  document.getElementById("diamondRound").classList.remove("show");
+});
+
+document.getElementById("bonusClose").addEventListener("click",()=>{
+  document.getElementById("bonusRound").classList.remove("show");
+});
+
+document.getElementById("bonusGo").addEventListener("click",async()=>{
+  if(spinning) return;
+  spinning=true;
+  document.getElementById("bonusGo").disabled=true;
+
+  await showBonusRound();
+
+  document.getElementById("bonusGo").disabled=false;
+  spinning=false;
 });
 
 bonusBtn.addEventListener("click",()=>{
   const cooldown=10*60*1000;
-  const left=cooldown-(Date.now()-data.lastBonus);
 
-  if(left>0){
-    msgEl.textContent="아직 보너스를 받을 수 없습니다.";
+  if(Date.now()-data.lastBonus<cooldown){
+    msgEl.textContent="아직 보너스 시간이 되지 않았어요.";
     return;
   }
 
-  data.coins+=300;
+  if(!data.infiniteCoins) data.coins+=300;
+
   data.lastBonus=Date.now();
-  save();
+  msgEl.textContent="🎁 보너스 +300 코인!";
   updateUI();
-  msgEl.textContent="🎁 보너스 300 코인을 받았습니다!";
+  save();
 });
 
-const shopPanel=document.getElementById("shopPanel");
-const shopBtn=document.getElementById("shopBtn");
-const shopClose=document.getElementById("shopClose");
-const shopMsg=document.getElementById("shopMsg");
-const inventoryEl=document.getElementById("inventory");
-
-function updateInventory(){
-  inventoryEl.textContent=`🍫 초콜릿 ${data.items.chocolate||0}개`;
-}
-
-shopBtn.addEventListener("click",()=>{
-  shopPanel.classList.add("show");
-  shopMsg.textContent="";
-  updateInventory();
+document.getElementById("shopBtn").addEventListener("click",()=>{
+  document.getElementById("shopPanel").classList.add("show");
 });
 
-shopClose.addEventListener("click",()=>{
-  shopPanel.classList.remove("show");
-});
-
-shopPanel.addEventListener("click",event=>{
-  if(event.target===shopPanel){
-    shopPanel.classList.remove("show");
-  }
+document.getElementById("shopClose").addEventListener("click",()=>{
+  document.getElementById("shopPanel").classList.remove("show");
 });
 
 document.querySelectorAll(".shopItem button").forEach(button=>{
   button.addEventListener("click",()=>{
     const price=Number(button.dataset.price);
     const item=button.dataset.item;
+    const shopMsg=document.getElementById("shopMsg");
 
     if(!data.infiniteCoins && data.coins<price){
       shopMsg.textContent="코인이 부족합니다.";
       return;
     }
 
-    if(!data.infiniteCoins){
-      data.coins-=price;
-    }
+    if(!data.infiniteCoins) data.coins-=price;
 
-    if(item==="chocolate"){
-      data.items.chocolate=(data.items.chocolate||0)+1;
-    }
+    data.items[item]=(data.items[item]||0)+1;
+    document.getElementById("inventory").textContent=
+      `🍫 초콜릿 ${data.items.chocolate||0}개`;
 
-    save();
+    shopMsg.textContent="구매해 주셔서 감사합니다. 구매한 품목은 지급됩니다.";
     updateUI();
-    updateInventory();
-
-    shopMsg.textContent="구매해주셔서 감사합니다. 해당품목은 실제로 지급된다.";
+    save();
   });
 });
 
 document.getElementById("resetBtn").addEventListener("click",()=>{
-  if(!confirm("게임을 초기화할까요?")) return;
+  if(spinning) return;
 
   data={
     coins:0,
     plays:0,
     lastBonus:0,
-    infiniteCoins:false,
     items:{snack:0,jelly:0,candy:0,chocolate:0},
-    jackpotAt:Math.floor(Math.random()*10)+1
+    infiniteCoins:false
   };
 
-  forceNextJackpot=false;
-  forceNextDiamond=false;
-  probabilityUp=false;
-  spinning=false;
-
-  playBtn.disabled=false;
-  probabilityUpBtn.textContent="📈 확률업: OFF";
-  infiniteToggleBtn.textContent="♾️ 무한 코인 켜기";
-  hideJackpotCelebration();
-  document.getElementById("bonusRound").classList.remove("show");
-  document.getElementById("diamondRound").classList.remove("show");
-  shopPanel.classList.remove("show");
-
-  save();
+  lockCommands("초기화되었습니다. 비밀번호를 다시 입력하세요.");
   updateUI();
+  updateInfiniteButton();
   msgEl.textContent="초기화 완료!";
 });
 
 updateUI();
+updateInfiniteButton();
+
 setInterval(updateUI,1000);
-  </script>
+</script>
 </body>
 </html>
