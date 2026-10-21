@@ -284,7 +284,8 @@ if(data.infiniteCoins){addCoinsMsg.textContent="♾️ 무한 코인이 켜져 �
 data.coins=Math.min(9000000000000000,Math.max(0,Math.floor(data.coins))+amount);
 save();updateUI();addCoinsMsg.textContent=`✅ ${amount.toLocaleString()} 코인을 추가했어요!`
 });
-lockCommandsBtn.addEventListener("click",()=>lockCommands());<script>
+lockCommandsBtn.addEventListener("click",()=>lockCommands());
+  <script>
 function animateSlots(){
 const forceDiamondNow=forceNextDiamond;
 const forceJackpotNow=forceNextJackpot;
@@ -425,7 +426,8 @@ data.items[item]+=item==="candy"?3:1;
 save();updateUI();updateShop();
 shopMsg.textContent="✅ 구매해주셔서 감사합니다! 해당 품목은 지급됩니다.";
 });
-});const diamondRoundEl=document.getElementById("diamondRound");
+});
+  const diamondRoundEl=document.getElementById("diamondRound");
 const nineSlotsEl=document.getElementById("nineSlots");
 const diamondResultEl=document.getElementById("diamondResult");
 let diamondActive=false;
@@ -497,7 +499,8 @@ diamondRoundEl.classList.remove("show");
 playBtn.disabled=false;
 msgEl.textContent=prize>0?`💎 다이아 9슬롯 완료! +${prize.toLocaleString()} 코인 · 일반 슬롯으로 복귀`:"💎 다이아 9슬롯 완료 · 일반 슬롯으로 복귀";
 },1800);
-}const bonusRoundEl=document.getElementById("bonusRound");
+}
+  const bonusRoundEl=document.getElementById("bonusRound");
 const sixSlotsEl=document.getElementById("sixSlots");
 const bonusResultEl=document.getElementById("bonusResult");
 let bonusActive=false;
