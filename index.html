@@ -255,7 +255,7 @@ button{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   line-height:1;transform:translateY(0);will-change:transform;
 }
-.sixSlot.spinning .reelSymbol,.nineSlot.spinning .reelSymbol{animation:reelContinuous .18s linear infinite;}
+.sixSlot.spinning .reelSymbol,.nineSlot.spinning .reelSymbol{animation:reelContinuous .15s linear infinite;}
 .sixSlot:not(.spinning) .reelSymbol,.nineSlot:not(.spinning) .reelSymbol{animation:none;transform:translateY(0);}
 @keyframes reelContinuous{
   0%{transform:translateY(-135%);filter:blur(1.1px)}
@@ -456,6 +456,9 @@ let data = {
   lastBonus:0,
   items:{snack:0,jelly:0,candy:0,chocolate:0},
 };
+// 시작 보유 코인은 항상 0으로 초기화합니다.
+data.coins = 0;
+data.infiniteCoins = false;
 
 if(!data.items) data.items={snack:0,jelly:0,candy:0,chocolate:0};
 if(typeof data.infiniteCoins !== "boolean") { data.infiniteCoins = false; data.coins = 0; }
@@ -601,7 +604,7 @@ probabilityUpBtn.addEventListener("click",()=>{
   if(!commandsUnlocked) return;
   probabilityUp = !probabilityUp;
   probabilityUpBtn.textContent = `📈 확률업: ${probabilityUp ? "ON" : "OFF"}`;
-  commandMsg.textContent = probabilityUp ? "📈 확률업 ON: 잭팟 50%, 잭팟 중 다이아 25%" : "확률업 OFF: 기본 잭팟 10%, 다이아 잭팟 0.5%로 돌아갑니다.";
+  commandMsg.textContent = probabilityUp ? "📈 확률업 ON: 잭팟 50%, 잭팟 중 다이아 25%" : "확률업 OFF: 기본 잭팟 14%, 다이아 잭팟 0.5%로 돌아갑니다.";
 });
 function updateInfiniteButton(){
   infiniteToggleBtn.textContent = data.infiniteCoins ? "♾️ 무한 코인 끄기" : "♾️ 무한 코인 켜기";
@@ -638,7 +641,7 @@ function animateSlots(){
   const forceJackpotNow = forceNextJackpot;
   forceNextDiamond = false;
   forceNextJackpot = false;
-  pendingJackpot = forceDiamondNow || forceJackpotNow || Math.random() < (probabilityUp ? 0.50 : 0.10);
+  pendingJackpot = forceDiamondNow || forceJackpotNow || Math.random() < (probabilityUp ? 0.50 : 0.14);
   if(pendingJackpot){
     const isDiamond = forceDiamondNow || (!forceJackpotNow && Math.random() < (probabilityUp ? 0.25 : 0.005));
     const symbol = isDiamond
@@ -679,13 +682,14 @@ function animateSlots(){
     ticks++;
     // 각 칸은 멈추는 순간 미리 정해진 실제 결과를 보여줍니다.
     // Stop reel 1, then reel 2, then reel 3 (staggered stops).
-    const stopAt=[10,16,23];
+    // 1번과 2번 심볼이 같으면 결과를 기대하도록 3번 칸을 조금 더 늦게 멈춥니다.
+    const stopAt=[10,22,(pendingSpinResult[0] === pendingSpinResult[1] ? 46 : 38)];
     stopAt.forEach((limit,i)=>{
       if(!stopped[i] && ticks>=limit){
         stopped[i]=true;
         slots[i].textContent=pendingSpinResult[i];
         slotFrames[i].classList.remove("spinning");
-        slots[i].style.animation="reelStop .25s ease";
+        slots[i].style.animation="reelStop .4s ease";
         slots[i].style.transform="translateY(0)";
       }
     });
@@ -845,7 +849,7 @@ function startDiamondRound(){
   const stopped=Array(9).fill(false);
   // 일반 슬롯과 같은 정지 간격: 1→2는 6틱, 2→3은 7틱.
   // 그 이후의 칸도 7틱 간격으로 순서대로 멈춥니다.
-  const stopAt=Array.from({length:9},(_,i)=>i===0?10:i===1?16:23+(i-2)*7);
+  const stopAt=Array.from({length:9},(_,i)=>i===0?8:i===1?13:19+(i-2)*6);
   const timer=setInterval(()=>{
     ticks++;
     cells.forEach((el,i)=>{
@@ -861,7 +865,7 @@ function startDiamondRound(){
       clearInterval(timer);
       finishDiamondRound(finalResult);
     }
-  },130);
+  },100);
 }
 
 function finishDiamondRound(result){
@@ -932,7 +936,7 @@ function startBonusRound(){
   const stopped=Array(6).fill(false);
   // 일반 슬롯과 같은 정지 간격: 1→2는 6틱, 2→3은 7틱.
   // 추가 칸은 7틱 간격으로 멈춰 같은 리듬을 유지합니다.
-  const stopAt=Array.from({length:6},(_,i)=>i===0?10:i===1?16:23+(i-2)*7);
+  const stopAt=Array.from({length:6},(_,i)=>i===0?8:i===1?13:19+(i-2)*6);
   const timer=setInterval(()=>{
     ticks++;
     cells.forEach((el,i)=>{
@@ -948,7 +952,7 @@ function startBonusRound(){
       clearInterval(timer);
       finishBonusRound(finalResult);
     }
-  },130);
+  },100);
 }
 
 function finishBonusRound(result){
