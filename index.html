@@ -67,7 +67,9 @@ h1{margin:0 0 8px;font-size:34px}
 .slot.failAnim{animation:failPulse .4s ease}
 .machineButtons{display:flex;gap:12px;justify-content:center}
 .machineButton{width:54px;height:22px;border-radius:50%;background:linear-gradient(#ffe86b,#b77b00);border:3px solid #7b4d00;box-shadow:inset 0 -4px 0 rgba(0,0,0,.25),0 3px 0 #542f00}
-.lever{position:absolute;right:-25px;top:90px;width:22px;height:108px;background:linear-gradient(90deg,#0088b5,#2bd7ff);border:3px solid #07506a;border-radius:14px;transform:rotate(10deg);box-shadow:3px 4px 8px rgba(0,0,0,.4)}
+.lever{position:absolute;right:-25px;top:90px;width:22px;height:108px;background:linear-gradient(90deg,#0088b5,#2bd7ff);border:3px solid #07506a;border-radius:14px;transform:rotate(10deg);box-shadow:3px 4px 8px rgba(0,0,0,.4);cursor:pointer;z-index:6;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none}
+.lever:active,.lever.pulled{transform:rotate(10deg);filter:none}
+.lever:focus-visible{outline:3px solid #ffe66d;outline-offset:5px}
 .lever:before{content:"";position:absolute;top:-18px;left:-9px;width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff8a8a,#e92828 60%,#8b0000);border:3px solid #ffd34d;box-shadow:0 3px 8px rgba(0,0,0,.4)}
 button{
   border:0;border-radius:16px;padding:14px 18px;font-size:18px;
@@ -83,7 +85,7 @@ button{
 .progress span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#7c4dff,#00e5ff);border-radius:99px;transition:width .35s ease}
 .slot.win{animation:winBounce .55s ease}
 .slot.failAnim{animation:failPulse .4s ease}
-#playBtn{position:relative;overflow:hidden}
+#playBtn{position:relative;z-index:20;overflow:hidden;display:block;pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 #playBtn:not(:disabled)::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:skewX(-20deg);animation:shine 2.2s infinite}
 @keyframes winBounce{35%{transform:scale(1.04) rotate(-0.5deg)}70%{transform:scale(.99) rotate(0.5deg)}}
 @keyframes failPulse{50%{transform:scale(1.08);filter:brightness(1.3)}}
@@ -314,7 +316,8 @@ button, input, [role="button"] {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
-button { pointer-events: auto; }
+button { pointer-events: auto; position:relative; z-index:5; }
+#playBtn { z-index:20 !important; }
 body::before, body::after,
 .slot::before, .slot::after,
 .jackpotCelebration::before, .bonusRound::before { pointer-events: none !important; }
@@ -343,7 +346,7 @@ body::before, body::after,
       <div class="slot" id="s3"><div class="reelSymbol">🍊</div></div>
     </div>
     <div class="machineButtons"><span class="machineButton"></span><span class="machineButton"></span><span class="machineButton"></span></div>
-    <div class="lever"></div>
+    <div class="lever" id="diamondLever" role="button" tabindex="0" aria-label="레버 당기기: 다음 스핀 다이아 잭팟 확정" title="당기면 다음 스핀 다이아 잭팟 확정"></div>
   </div>
 
   <button id="playBtn">▶ PLAY (-100 코인)</button>
@@ -759,17 +762,45 @@ function finishSpin(){
   }
 }
 
-playBtn.addEventListener("click",()=>{
+function startPlay(){
+  if(playBtn.disabled || bonusActive || diamondActive || shopPanel.classList.contains("show")) return;
   if(!data.infiniteCoins && data.coins < 100){
-    msgEl.textContent = "코인이 부족해요! (필요 코인: 100)";
+    msgEl.textContent = "코인이 부족해요! 보너스 받기 버튼으로 300코인을 먼저 받아 주세요.";
     return;
   }
   if(!data.infiniteCoins) data.coins -= 100;
   save(); updateUI();
 
   playBtn.disabled=true;
-  msgEl.textContent="🎰 돌리는 중...";
+  msgEl.textContent = forceNextDiamond ? "💎 다이아 잭팟 확정! 돌리는 중..." : "🎰 돌리는 중...";
   animateSlots();
+}
+playBtn.addEventListener("click", startPlay);
+playBtn.addEventListener("keydown", e=>{
+  if(e.key === "Enter" || e.key === " "){
+    e.preventDefault();
+    startPlay();
+  }
+});
+
+// 오른쪽 파란 레버: 다이아 잭팟을 예약만 합니다. 실제 회전은 PLAY를 눌러야 시작됩니다.
+const diamondLever = document.getElementById("diamondLever");
+function pullDiamondLever(){
+  if(playBtn.disabled || bonusActive || diamondActive || shopPanel.classList.contains("show")) return;
+  if(forceNextDiamond){
+    msgEl.textContent = "💎 다이아 잭팟이 준비됐어요! PLAY를 눌러 시작하세요.";
+    return;
+  }
+  forceNextDiamond = true;
+  forceNextJackpot = false;
+  msgEl.textContent = "💎 다이아 잭팟 준비 완료! 마지막으로 PLAY를 눌러주세요.";
+}
+diamondLever.addEventListener("click", pullDiamondLever);
+diamondLever.addEventListener("keydown", e=>{
+  if(e.key === "Enter" || e.key === " "){
+    e.preventDefault();
+    pullDiamondLever();
+  }
 });
 
 bonusBtn.addEventListener("click",()=>{
