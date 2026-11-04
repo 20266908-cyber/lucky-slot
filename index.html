@@ -40,6 +40,9 @@ body:after{
   border-radius:28px; box-shadow:0 25px 80px rgba(0,0,0,.45);
 }
 h1{margin:0 0 8px;font-size:34px}
+.titleSlotIcon{display:inline-block;border:0;background:transparent;padding:0 2px;font:inherit;cursor:pointer;touch-action:manipulation;vertical-align:baseline;border-radius:10px}
+.titleSlotIcon:focus-visible{outline:3px solid #168bd2;outline-offset:3px}
+.titleSlotIcon.armed{filter:none;transform:none}
 .sub{opacity:.75;margin-bottom:18px}
 .coinBox{
   padding:14px 20px; border-radius:18px; margin-bottom:18px;
@@ -328,7 +331,7 @@ body::before, body::after,
 </head>
 <body>
 <div class="game" id="game">
-  <h1>🎰 Lucky Slots</h1>
+  <h1><button type="button" id="titleSlotIcon" class="titleSlotIcon" aria-label="슬롯머신 아이콘 선택">🎰</button> Lucky Slots</h1>
   <div class="sub">🪙 코인 100개로 돌리는 아케이드 슬롯</div>
 
   <div class="coinBox">
@@ -567,7 +570,7 @@ function shufflePinKeypad(){
 pinClearBtn.addEventListener("click",()=>{commandPassword.value="";commandPasswordMsg.textContent="입력을 지웠어요.";});
 pinBackBtn.addEventListener("click",()=>{commandPassword.value=commandPassword.value.slice(0,-1);commandPasswordMsg.textContent=`비밀번호 입력 중 (${commandPassword.value.length}/4)`;});
 unlockCommandsBtn.addEventListener("click",()=>{
-  if(commandPassword.value === "5252") {
+  if(commandPassword.value === "3796") {
     commandsUnlocked = true;
     testCommandArea.style.display = "block";
     commandPasswordGate.style.display = "none";
@@ -644,9 +647,9 @@ function animateSlots(){
   const forceJackpotNow = forceNextJackpot;
   forceNextDiamond = false;
   forceNextJackpot = false;
-  pendingJackpot = forceDiamondNow || forceJackpotNow || Math.random() < (probabilityUp ? 0.50 : 0.14);
+  pendingJackpot = forceDiamondNow || forceJackpotNow || Math.random() < (probabilityUp ? 0.50 : 0.10);
   if(pendingJackpot){
-    const isDiamond = forceDiamondNow || (!forceJackpotNow && Math.random() < (probabilityUp ? 0.25 : 0.005));
+    const isDiamond = forceDiamondNow || (!forceJackpotNow && Math.random() < (probabilityUp ? 0.25 : 0.0001));
     const symbol = isDiamond
       ? "💎"
       : symbols.filter(s => s !== "💎")[Math.floor(Math.random()*5)];
@@ -771,6 +774,8 @@ function startPlay(){
   if(!data.infiniteCoins) data.coins -= 100;
   save(); updateUI();
 
+  diamondIconReady = false;
+  titleSlotIcon.classList.remove("armed");
   playBtn.disabled=true;
   msgEl.textContent = forceNextDiamond ? "💎 다이아 잭팟 확정! 돌리는 중..." : "🎰 돌리는 중...";
   animateSlots();
@@ -785,12 +790,26 @@ playBtn.addEventListener("keydown", e=>{
 
 // 오른쪽 파란 레버: 다이아 잭팟을 예약만 합니다. 실제 회전은 PLAY를 눌러야 시작됩니다.
 const diamondLever = document.getElementById("diamondLever");
+const titleSlotIcon = document.getElementById("titleSlotIcon");
+let diamondIconReady = false;
+titleSlotIcon.addEventListener("click",()=>{
+  if(playBtn.disabled || bonusActive || diamondActive || shopPanel.classList.contains("show")) return;
+  diamondIconReady = true;
+  titleSlotIcon.classList.remove("armed");
+  // 아이콘 선택은 화면에 표시하지 않고 조용히 활성화합니다.
+});
 function pullDiamondLever(){
   if(playBtn.disabled || bonusActive || diamondActive || shopPanel.classList.contains("show")) return;
-  if(forceNextDiamond){
-    msgEl.textContent = "💎 다이아 잭팟이 준비됐어요! PLAY를 눌러 시작하세요.";
+  if(!diamondIconReady){
+    msgEl.textContent = "먼저 제목 옆 🎰 아이콘을 눌러주세요!";
     return;
   }
+  if(forceNextDiamond){
+    msgEl.textContent = "💎 다이아 잭팟이 준비됐어요! 마지막으로 PLAY를 눌러 시작하세요.";
+    return;
+  }
+  diamondIconReady = false;
+  titleSlotIcon.classList.remove("armed");
   forceNextDiamond = true;
   forceNextJackpot = false;
   msgEl.textContent = "💎 다이아 잭팟 준비 완료! 마지막으로 PLAY를 눌러주세요.";
