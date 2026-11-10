@@ -44,6 +44,14 @@ h1{margin:0 0 8px;font-size:34px}
 .titleSlotIcon:focus-visible{outline:3px solid #168bd2;outline-offset:3px}
 .titleSlotIcon.armed{filter:none;transform:none}
 .sub{opacity:.75;margin-bottom:18px}
+
+.coinInputBox{margin:12px auto 14px;padding:14px;border-radius:18px;background:rgba(255,255,255,.9);border:2px solid rgba(157,105,0,.25);color:#3b2200;box-shadow:0 5px 14px rgba(0,0,0,.08);}
+.coinInputTitle{font-size:18px;font-weight:1000;margin-bottom:10px;text-align:center;}
+.coinStepper{display:flex;align-items:center;justify-content:center;gap:12px;}
+.coinStepper button{width:58px;height:52px;border:0;border-radius:15px;background:linear-gradient(135deg,#ffca28,#ff8f00);color:#fff;font-size:32px;font-weight:1000;line-height:1;box-shadow:0 4px 0 #a85b00;}
+.coinStepper button:active{transform:translateY(2px);box-shadow:0 2px 0 #a85b00;}
+.selectedCoin{min-width:120px;height:52px;display:flex;align-items:center;justify-content:center;border-radius:15px;background:#fff8e1;border:3px solid #ffca28;font-size:28px;font-weight:1000;color:#7a1800;}
+.coinInputHint{text-align:center;margin-top:8px;font-size:12px;font-weight:800;opacity:.72;}
 .coinBox{
   padding:14px 20px; border-radius:18px; margin-bottom:18px;
   background:rgba(255,255,255,.7);
@@ -275,6 +283,15 @@ button{
   100%{transform:translateY(0);filter:blur(0)}
 }
 
+
+.startGiftOverlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.62);backdrop-filter:blur(4px)}
+.startGiftCard{width:min(92vw,430px);padding:28px 22px;border-radius:24px;text-align:center;background:linear-gradient(145deg,#fff8dc,#ffd65a);border:4px solid #8a4b00;box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.startGiftCard h2{margin:0 0 10px;font-size:clamp(24px,7vw,34px);color:#4b2700}
+.startGiftCard p{margin:0 0 22px;font-weight:800;color:#6b4300}
+.startGiftButtons{display:flex;gap:12px;justify-content:center}
+.startGiftButtons button{flex:1;min-height:58px;border:3px solid #7b4300;border-radius:16px;background:linear-gradient(#fff,#ffbd24);font-size:20px;font-weight:1000;color:#3b2200;box-shadow:0 5px 0 #8a4b00;cursor:pointer}
+.startGiftButtons button:active{transform:translateY(4px);box-shadow:0 1px 0 #8a4b00}
+.startGiftOverlay.hidden{display:none}
 </style>
 
 <style>
@@ -330,16 +347,36 @@ body::before, body::after,
 </style>
 </head>
 <body>
+
+<div class="startGiftOverlay" id="startGiftOverlay">
+  <div class="startGiftCard">
+    <h2>처음에 코인을 줄까?</h2>
+    <p>시작할 LUCKY 코인을 선택하세요.</p>
+    <div class="startGiftButtons">
+      <button type="button" id="giveOneCoinBtn">1개 줄게</button>
+      <button type="button" id="giveTwoCoinBtn">2개 줄게</button>
+    </div>
+  </div>
+</div>
+
 <div class="game" id="game">
   <h1><button type="button" id="titleSlotIcon" class="titleSlotIcon" aria-label="슬롯머신 아이콘 선택">🎰</button> Lucky Slots</h1>
-  <div class="sub">🪙 코인 100개로 돌리는 아케이드 슬롯</div>
+  <div class="sub">🪙 LUCKY 코인 100개로 돌리는 아케이드 슬롯</div>
 
   <div class="coinBox">
-    <div class="coinLabel">보유 코인</div>
+    <div class="coinLabel">보유 LUCKY 코인</div>
     <div class="coins" id="coins">0</div>
   </div>
 
-  <div class="bonus" id="bonus">🎁 보너스 코인: 준비 중...</div>
+  <div class="coinInputBox" id="coinInputBox">
+    <div class="coinInputTitle">넣을 코인의 수를 정하시오</div>
+    <div class="coinStepper">
+      <button type="button" id="minusCoinBtn" aria-label="코인 1개 줄이기">−</button>
+      <div class="selectedCoin" id="selectedCoin">1</div>
+      <button type="button" id="plusCoinBtn" aria-label="코인 1개 추가">＋</button>
+    </div>
+    <div class="coinInputHint">+ 버튼을 누르면 1개 추가 · 최대 보유 코인</div>
+  </div>
 
   <div class="slotMachine" id="slotMachine">
     <div class="machineTop"><div class="bigWin">BIG WIN</div><div class="goodLuck">GOOD LUCK • LUCKY SLOTS</div></div>
@@ -352,10 +389,9 @@ body::before, body::after,
     <div class="lever" id="diamondLever" role="button" tabindex="0" aria-label="레버 당기기: 다음 스핀 다이아 잭팟 확정" title="당기면 다음 스핀 다이아 잭팟 확정"></div>
   </div>
 
-  <button id="playBtn">▶ PLAY (-100 코인)</button>
+  <button id="playBtn">▶ PLAY</button>
 
   <div class="row">
-    <button id="bonusBtn">🎁 보너스 받기</button>
     <button id="shopBtn">🛒 상점</button>
     <button id="commandToggleBtn">🧪 테스트 / 옵션</button>
     <button id="resetBtn">↻ 초기화</button>
@@ -384,12 +420,12 @@ body::before, body::after,
     <button id="probabilityUpBtn" style="background:linear-gradient(135deg,#ab47bc,#6a1b9a)">📈 확률업: OFF</button>
   </div>
   <div id="commandMsg" style="font-weight:800;color:#fff;margin-top:8px">확정 명령은 다음 스핀 1회에 적용됩니다.</div>
-  <div style="font-weight:1000;color:#ffe082;margin:14px 0 8px">🪙 코인 추가 명령어</div>
+  <div style="font-weight:1000;color:#ffe082;margin:14px 0 8px">🪙 LUCKY LUCKY 코인 추가 명령어</div>
   <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center">
     <input id="addCoinsAmount" type="number" min="1" max="1000000000" step="100" value="1000" inputmode="numeric" aria-label="추가할 코인" placeholder="추가할 코인 수" style="width:150px;padding:10px;border-radius:10px;border:2px solid #ffd54f;font-size:16px;text-align:center">
-    <button id="addCoinsBtn" style="background:linear-gradient(135deg,#ffd54f,#ff8f00);color:#351900">🪙 코인 추가</button>
+    <button id="addCoinsBtn" style="background:linear-gradient(135deg,#ffd54f,#ff8f00);color:#351900">🪙 LUCKY LUCKY 코인 추가</button>
   </div>
-  <div id="addCoinsMsg" style="font-weight:800;margin-top:8px;min-height:22px;color:#fff">원하는 코인 수를 입력하고 추가하세요.</div>
+  <div id="addCoinsMsg" style="font-weight:800;margin-top:8px;min-height:22px;color:#fff">원하는 LUCKY 코인 수를 입력하고 추가하세요.</div>
   <div style="font-weight:1000;color:#ffe082;margin:14px 0 8px">♾️ 무한 코인 명령어</div>
   <button id="infiniteToggleBtn" style="width:100%;background:linear-gradient(135deg,#43a047,#1b5e20)">♾️ 무한 코인 켜기</button>
   <div id="optionsMsg" style="font-weight:800;margin-top:9px;min-height:22px;color:#fff">무한 코인 상태를 여기서 바꿀 수 있어요.</div>
@@ -406,7 +442,7 @@ body::before, body::after,
     <h2>🛒 아이템 상점</h2>
     <div class="inventory" id="inventory">🍫 초콜릿 0개</div>
     <div class="shopItems">
-      <div class="shopItem"><div class="info">🍫 초콜릿<small>900 코인 → 1개</small></div><button data-item="chocolate" data-price="900">구매</button></div>
+      <div class="shopItem"><div class="info">🍫 초콜릿<small>1 LUCKY 코인 → 1개</small></div><button data-item="chocolate" data-price="1">구매</button></div>
     </div>
     <div class="shopMsg" id="shopMsg"></div>
     <button class="shopClose" id="shopClose">닫기</button>
@@ -439,7 +475,7 @@ body::before, body::after,
 <div class="bonusRound" id="bonusRound">
   <div class="bonusPanel">
     <h2>👑 황금 슬롯 BONUS ROUND!</h2>
-    <p>🎰 잭팟이 터지면 6칸(3×2) 황금 슬롯으로 이동!<br>2개 +200 · 3개 +300 · 4개 +400 · 5개 +500 · 6개 +3,000 코인<br>황금 슬롯 6개 잭팟 확률 5%<br>한 번 끝나면 자동으로 일반 3칸 슬롯으로 복귀</p>
+    <p>🎰 잭팟이 터지면 6칸(3×2) 황금 슬롯으로 이동!<br>2개 +400 · 3개 +600 · 4개 +800 · 5개 +1,000 · 6개 +6,000 LUCKY 코인<br>황금 슬롯 6개 잭팟 확률 5%<br>한 번 끝나면 자동으로 일반 3칸 슬롯으로 복귀</p>
     <div class="sixSlots" id="sixSlots"></div>
     <div class="bonusResult" id="bonusResult">황금 슬롯 준비 중...</div>
   </div>
@@ -459,7 +495,6 @@ const rewards = {
 let data = {
   coins:0,
   plays:0,
-  lastBonus:0,
   items:{snack:0,jelly:0,candy:0,chocolate:0},
 };
 // 시작 보유 코인은 항상 0으로 초기화합니다.
@@ -473,13 +508,11 @@ if(typeof data.items.chocolate !== "number") data.items.chocolate = 0;
 if(typeof data.jackpotRewardDone !== "boolean") data.jackpotRewardDone = false;
 
 const coinsEl = document.getElementById("coins");
-const bonusEl = document.getElementById("bonus");
 const msgEl = document.getElementById("msg");
 const gameEl = document.getElementById("game");
 const playBtn = document.getElementById("playBtn");
 const jackpotCelebrationEl = document.getElementById("jackpotCelebration");
 const jackpotReels = [document.getElementById("jackpotReel1"), document.getElementById("jackpotReel2"), document.getElementById("jackpotReel3")];
-const bonusBtn = document.getElementById("bonusBtn");
 const slotFrames = [
   document.getElementById("s1"),
   document.getElementById("s2"),
@@ -494,23 +527,7 @@ function save(){
 function updateUI(){
   if(data.infiniteCoins) { data.coins = 999999999; coinsEl.textContent = "∞"; }
   else { coinsEl.textContent = Math.max(0, Math.floor(data.coins)).toLocaleString(); }
-  const cooldown = 10 * 60 * 1000;
-  const left = Math.max(0, cooldown - (Date.now() - data.lastBonus));
-
-  if(left <= 0){
-    bonusEl.textContent = "🎁 보너스 코인 준비 완료! (+300)";
-    bonusEl.classList.add("ready");
-    bonusBtn.disabled = false;
-    bonusBtn.textContent = "🎁 보너스 받기";
-  }else{
-    const totalSec = Math.ceil(left / 1000);
-    const min = Math.floor(totalSec / 60);
-    const sec = totalSec % 60;
-    bonusEl.textContent = `⏳ 다음 보너스까지 ${min}:${String(sec).padStart(2,"0")}`;
-    bonusEl.classList.remove("ready");
-    bonusBtn.disabled = true;
-    bonusBtn.textContent = "⏳ 기다리는 중";
-  }
+  if(typeof selectedCoinEl !== "undefined" && selectedCoinEl) syncCoinSelector();
 }
 
 function randomSymbol(){
@@ -608,9 +625,9 @@ forceDiamondBtn.addEventListener("click",()=>{
 });
 probabilityUpBtn.addEventListener("click",()=>{
   if(!commandsUnlocked) return;
-  probabilityUp = !probabilityUp;
-  probabilityUpBtn.textContent = `📈 확률업: ${probabilityUp ? "ON" : "OFF"}`;
-  commandMsg.textContent = probabilityUp ? "📈 확률업 ON: 잭팟 50%, 잭팟 중 다이아 25%" : "확률업 OFF: 기본 잭팟 14%, 다이아 잭팟 0.5%로 돌아갑니다.";
+  probabilityUp = false;
+  probabilityUpBtn.textContent = "📈 잭팟 확률: 6%";
+  commandMsg.textContent = "기본 잭팟 확률은 6%입니다.";
 });
 function updateInfiniteButton(){
   infiniteToggleBtn.textContent = data.infiniteCoins ? "♾️ 무한 코인 끄기" : "♾️ 무한 코인 켜기";
@@ -622,7 +639,7 @@ infiniteToggleBtn.addEventListener("click",()=>{
   if(data.infiniteCoins) data.coins = 999999999;
   else data.coins = 0;
   save(); updateUI(); updateInfiniteButton();
-  optionsMsg.textContent = data.infiniteCoins ? "♾️ 무한 코인이 켜졌어요!" : "✅ 무한 코인을 껐어요. 일반 코인 모드로 전환됐어요.";
+  optionsMsg.textContent = data.infiniteCoins ? "♾️ 무한 LUCKY 코인이 켜졌어요!" : "✅ 무한 코인을 껐어요. 일반 LUCKY 코인 모드로 전환됐어요.";
 });
 addCoinsBtn.addEventListener("click",()=>{
   if(!commandsUnlocked) return;
@@ -637,7 +654,7 @@ addCoinsBtn.addEventListener("click",()=>{
   }
   data.coins = Math.min(9000000000000000, Math.max(0, Math.floor(data.coins)) + amount);
   save(); updateUI();
-  addCoinsMsg.textContent = `✅ ${amount.toLocaleString()} 코인을 추가했어요!`;
+  addCoinsMsg.textContent = `✅ ${amount.toLocaleString()} LUCKY 코인을 추가했어요!`;
 });
 lockCommandsBtn.addEventListener("click",()=>lockCommands());
 
@@ -647,9 +664,9 @@ function animateSlots(){
   const forceJackpotNow = forceNextJackpot;
   forceNextDiamond = false;
   forceNextJackpot = false;
-  pendingJackpot = forceDiamondNow || forceJackpotNow || Math.random() < (probabilityUp ? 0.50 : 0.05);
+  pendingJackpot = forceDiamondNow || forceJackpotNow || Math.random() < 0.06;
   if(pendingJackpot){
-    const isDiamond = forceDiamondNow || (!forceJackpotNow && Math.random() < (probabilityUp ? 0.25 : 0.00000001));
+    const isDiamond = forceDiamondNow || (!forceJackpotNow && Math.random() < 0.005);
     const symbol = isDiamond
       ? "💎"
       : symbols.filter(s => s !== "💎")[Math.floor(Math.random()*5)];
@@ -715,11 +732,11 @@ function finishSpin(){
     const jackpotSymbol = result[0];
     const isDiamondJackpot = jackpotSymbol === "💎";
     jackpotReels.forEach(el=>el.textContent=jackpotSymbol);
-    const jackpotReward = isDiamondJackpot ? 10000 : 500;
+    const jackpotReward = isDiamondJackpot ? currentSpinStake * 3 : currentSpinStake * 2;
     data.coins += jackpotReward;
     data.jackpotRewardDone = true;
     const jackpotType = isDiamondJackpot ? "💎 다이아 희귀 잭팟" : "✨ 일반 잭팟";
-    msgEl.textContent = `🎰 JACKPOT! ${jackpotType} +${jackpotReward.toLocaleString()} 코인!`;
+    msgEl.textContent = `🎰 JACKPOT! ${jackpotType} +${jackpotReward.toLocaleString()} LUCKY 코인! (${isDiamondJackpot ? "3배" : "2배"})`;
     gameEl.classList.remove("flash");
     void gameEl.offsetWidth;
     gameEl.classList.add("flash");
@@ -737,9 +754,7 @@ function finishSpin(){
   }
 
   if(result[0]===result[1] && result[1]===result[2]){
-    const reward = rewards[result[0]];
-    data.coins += reward;
-    msgEl.textContent = `🎉 3개 일치! +${reward.toLocaleString()} 코인!`;
+    msgEl.textContent = "🎉 3개 일치!";
     gameEl.classList.remove("flash");
     void gameEl.offsetWidth;
     gameEl.classList.add("flash");
@@ -765,13 +780,56 @@ function finishSpin(){
   }
 }
 
+let selectedCoins = 1;
+let currentSpinStake = 1;
+const selectedCoinEl = document.getElementById("selectedCoin");
+const plusCoinBtn = document.getElementById("plusCoinBtn");
+const minusCoinBtn = document.getElementById("minusCoinBtn");
+const startGiftOverlay=document.getElementById("startGiftOverlay");
+const giveOneCoinBtn=document.getElementById("giveOneCoinBtn");
+const giveTwoCoinBtn=document.getElementById("giveTwoCoinBtn");
+let startGiftChosen=false;
+function chooseStartGift(amount){
+  if(startGiftChosen) return;
+  startGiftChosen=true;
+  data.coins=amount;
+  selectedCoins=1;
+  startGiftOverlay.classList.add("hidden");
+  updateUI();
+  syncCoinSelector();
+  msgEl.textContent=`LUCKY 코인 ${amount}개를 받았습니다! 넣을 코인을 정해주세요.`;
+}
+giveOneCoinBtn.addEventListener("click",()=>chooseStartGift(1));
+giveTwoCoinBtn.addEventListener("click",()=>chooseStartGift(2));
+
+function syncCoinSelector(){
+  const max = Math.max(0, Math.floor(data.coins));
+  if(max <= 0) selectedCoins = 0;
+  else selectedCoins = Math.min(Math.max(1, selectedCoins), max);
+  selectedCoinEl.textContent = selectedCoins.toLocaleString();
+  minusCoinBtn.disabled = selectedCoins <= 1 || max <= 0;
+  plusCoinBtn.disabled = selectedCoins >= max || max <= 0;
+}
+plusCoinBtn.addEventListener("click",()=>{
+  const max = Math.max(0, Math.floor(data.coins));
+  if(selectedCoins < max) selectedCoins++;
+  syncCoinSelector();
+});
+minusCoinBtn.addEventListener("click",()=>{
+  if(selectedCoins > 1) selectedCoins--;
+  syncCoinSelector();
+});
+
 function startPlay(){
   if(playBtn.disabled || bonusActive || diamondActive || shopPanel.classList.contains("show")) return;
-  if(!data.infiniteCoins && data.coins < 100){
-    msgEl.textContent = "코인이 부족해요! 보너스 받기 버튼으로 300코인을 먼저 받아 주세요.";
+  const max = Math.max(0, Math.floor(data.coins));
+  if(max < 1 || selectedCoins < 1){
+    msgEl.textContent = "넣을 LUCKY 코인을 먼저 정해주세요.";
     return;
   }
-  if(!data.infiniteCoins) data.coins -= 100;
+  currentSpinStake = selectedCoins;
+  if(!data.infiniteCoins) data.coins -= currentSpinStake;
+  syncCoinSelector();
   save(); updateUI();
 
   diamondIconReady = false;
@@ -822,23 +880,6 @@ diamondLever.addEventListener("keydown", e=>{
   }
 });
 
-bonusBtn.addEventListener("click",()=>{
-  const cooldown = 10 * 60 * 1000;
-  if(Date.now() - data.lastBonus < cooldown) return;
-
-  // 10분마다 받는 보너스 코인은 매번 300코인
-  const bonusAmount = 300;
-  data.coins += bonusAmount;
-  data.bonusCount++;
-  data.lastBonus = Date.now();
-  msgEl.textContent = `🎁 보너스 코인 +${bonusAmount}!`;
-  gameEl.classList.remove("flash");
-  void gameEl.offsetWidth;
-  gameEl.classList.add("flash");
-  save();
-  updateUI();
-});
-
 
 const shopBtn = document.getElementById("shopBtn");
 const shopPanel = document.getElementById("shopPanel");
@@ -847,7 +888,7 @@ const shopMsg = document.getElementById("shopMsg");
 const inventoryEl = document.getElementById("inventory");
 
 function updateShop(){
-  inventoryEl.textContent = `🍫 초콜릿 ${data.items.chocolate}개`;
+  inventoryEl.textContent = `🍫 초콜릿 ${data.items.chocolate}개 · 🪙 초콜릿 코인 ${data.chocolateCoins || 0}개`;
 }
 
 shopBtn.addEventListener("click",()=>{ updateShop(); shopMsg.textContent=""; shopPanel.classList.add("show"); });
@@ -926,8 +967,7 @@ function finishDiamondRound(result){
   const counts={};
   result.forEach(symbol=>counts[symbol]=(counts[symbol]||0)+1);
   const maxMatch=Math.max(...Object.values(counts));
-  const diamondRewards={3:300,4:500,5:1000,6:2000,7:5000,8:10000,9:30000};
-  const prize=diamondRewards[maxMatch]||0;
+  const prize=(maxMatch===9)?3:0;
   cells.forEach((el,i)=>{
     el.classList.remove("spinning");
     const symbolEl=el.querySelector(".reelSymbol");
@@ -938,7 +978,7 @@ function finishDiamondRound(result){
   });
   if(prize>0){
     data.coins+=prize;
-    diamondResultEl.textContent=`💎 9슬롯 ${maxMatch}개 일치! +${prize.toLocaleString()} 코인!`;
+    diamondResultEl.textContent=`💎 다이아 보너스 슬롯 9개 전체 일치! +${prize.toLocaleString()} LUCKY 코인!`;
   }else{
     diamondResultEl.textContent="아쉽지만 3개 일치가 없어 추가 보너스는 없어요!";
   }
@@ -1013,8 +1053,7 @@ function finishBonusRound(result){
   const counts = {};
   result.forEach(symbol => counts[symbol] = (counts[symbol] || 0) + 1);
   const maxMatch = Math.max(...Object.values(counts));
-  const goldenRewards = {2:200, 3:300, 4:400, 5:500, 6:3000};
-  const prize = goldenRewards[maxMatch] || 0;
+  const prize = (maxMatch===6) ? 1 : 0;
   six.forEach((el,i)=>{
     el.classList.remove("spinning");
     const symbolEl=el.querySelector(".reelSymbol");
@@ -1025,7 +1064,7 @@ function finishBonusRound(result){
 
   if(prize > 0){
     data.coins += prize;
-    bonusResultEl.textContent = `👑 황금 슬롯 ${maxMatch}개 일치! +${prize.toLocaleString()} 코인!`;
+    bonusResultEl.textContent = `👑 일반 보너스 슬롯 6개 전체 일치! +${prize.toLocaleString()} LUCKY 코인!`;
   }else{
     bonusResultEl.textContent = "😅 황금 슬롯 일치 없음! 보상 없음";
   }
@@ -1039,16 +1078,18 @@ function finishBonusRound(result){
     bonusRoundEl.classList.remove("show");
     playBtn.disabled = false;
     msgEl.textContent = prize > 0
-      ? `👑 황금 슬롯 완료! +${prize.toLocaleString()} 코인 · 일반 슬롯으로 복귀`
-      : "👑 황금 슬롯 완료! 일반 슬롯으로 복귀";
+      ? `👑 일반 보너스 슬롯 완료! +${prize.toLocaleString()} 코인 · 일반 슬롯으로 복귀`
+      : "👑 일반 보너스 슬롯 완료! 일반 슬롯으로 복귀";
   },1600);
 }
 
 
 document.getElementById("resetBtn").addEventListener("click",()=>{
   if(confirm("코인과 기록을 초기화할까요?")){
-    data={coins:0,plays:0,lastBonus:0,items:{snack:0,jelly:0,candy:0,chocolate:0},jackpotAt:Math.floor(Math.random()*10)+1};
+    data={coins:0,plays:0,items:{snack:0,jelly:0,candy:0,chocolate:0},jackpotAt:Math.floor(Math.random()*10)+1};
     save();
+    selectedCoins = 1;
+    currentSpinStake = 1;
     updateUI();
     msgEl.textContent="초기화 완료!";
   }
