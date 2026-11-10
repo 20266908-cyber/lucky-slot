@@ -647,7 +647,7 @@ function animateSlots(){
   const forceJackpotNow = forceNextJackpot;
   forceNextDiamond = false;
   forceNextJackpot = false;
-  pendingJackpot = forceDiamondNow || forceJackpotNow || Math.random() < (probabilityUp ? 0.50 : 0.5);
+  pendingJackpot = forceDiamondNow || forceJackpotNow || Math.random() < (probabilityUp ? 0.50 : 0.05);
   if(pendingJackpot){
     const isDiamond = forceDiamondNow || (!forceJackpotNow && Math.random() < (probabilityUp ? 0.25 : 0.00000001));
     const symbol = isDiamond
